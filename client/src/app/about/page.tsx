@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import AboutSection from '@/components/AboutSection';
 import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
+import Footer from '@/components/Footer';
+import Chatbot from '../chatbot/page';
 
 
 export default function AboutPage() {
@@ -19,6 +21,7 @@ export default function AboutPage() {
   }, []);
 
   return (
+    <>
     <motion.div
       className="min-h-screen bg-[#0F0F0F] text-white px-6 py-10 mt-10"
       initial={{ opacity: 0 }}
@@ -26,7 +29,7 @@ export default function AboutPage() {
       transition={{ duration: 1 }}
     >
       <Navbar />
-
+      <Chatbot/>
      <div className="relative text-center mb-10 mt-10">
   <div className="absolute top-0 right-0 blob w-[50vw] h-[100vh] rounded-full opacity-30 blur-3xl z-0 pointer-events-none"></div>
   
@@ -70,7 +73,8 @@ export default function AboutPage() {
       <li>
         <strong>Frontend:</strong>
         <div className="flex flex-wrap mt-2 gap-2">
-          <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">React.js</span>
+          <span className=" bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">React.js</span>
+          <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">Redux Store</span>
           <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">Next.js</span>
           <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">TypeScript</span>
           <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">Tailwind CSS</span>
@@ -80,6 +84,8 @@ export default function AboutPage() {
         <strong>Backend:</strong>
         <div className="flex flex-wrap mt-2 gap-2">
           <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">Node.js</span>
+          <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">Firebase</span>
+          <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">JWT Token</span>
           <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">Express.js</span>
           <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">Socket.IO</span>
         </div>
@@ -97,6 +103,14 @@ export default function AboutPage() {
           <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">Vercel</span>
           <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">Figma</span>
           <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">Postman</span>
+        </div>
+      </li>
+      <li>
+        <strong>UI Libraries</strong>
+        <div className="flex flex-wrap mt-2 gap-2">
+          <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">Shadcn</span>
+          <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">Framer Motion</span>
+          <span className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit">Chakra ui</span>
         </div>
       </li>
     </ul>
@@ -193,5 +207,7 @@ export default function AboutPage() {
 </section>
 
     </motion.div>
+    <Footer/>
+    </>
   );
 }

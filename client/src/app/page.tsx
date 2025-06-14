@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Loader from '@/components/Loader';
 import { motion } from 'framer-motion';
 import "three";
 import { useRouter } from 'next/navigation';
@@ -14,7 +13,6 @@ declare global {
 }
 
 export default function Home() {
-  const [loadingComplete, setLoadingComplete] = useState(false);
   const [vantaEffect, setVantaEffect] = useState<any>(null);
   const vantaRef = useRef(null);
   const router=useRouter();
@@ -29,26 +27,13 @@ export default function Home() {
   },[]);
 
   useEffect(() => {
-    if (
-      loadingComplete &&                  // ← Wait for loader to finish
+    if (            
       !vantaEffect &&
       typeof window !== 'undefined' &&
       window.VANTA &&
       window.THREE
     ) {
-//       setVantaEffect(
-//   window.VANTA.FOG({
-//     el: vantaRef.current,
-//     THREE: window.THREE,
-//   highlightColor: 0x87CEEB,   // LightSkyBlue
-//   midtoneColor: 0x4682B4,     // SteelBlue
-//   lowlightColor: 0x1E3A5F,    // Deep bluish shade
-//   baseColor: 0x0F172A,        // Very dark navy (for base)
-//   blurFactor: 0.5,
-//   speed: 0.6,
-//   zoom: 1.2
-//   })
-// );
+
 setVantaEffect(
   window.VANTA.BIRDS({
     el: vantaRef.current,
@@ -69,23 +54,17 @@ setVantaEffect(
     return () => {
       if (vantaEffect) vantaEffect.destroy();
     };
-  }, [loadingComplete, vantaEffect]);
+  }, [ vantaEffect]);
 
   return (
     <div className="relative h-screen w-screen overflow-hidden text-white">
-      {/* Loader Component */}
-      {!loadingComplete && (
-        <Loader onComplete={() => setLoadingComplete(true)} />
-      )}
 
-      {/* Vanta Background Section (now waits for loader) */}
       <motion.div
         ref={vantaRef}
         className={`relative h-screen w-screen transition-all duration-1000 ${
-          loadingComplete ? 'opacity-100 blur-0' : 'opacity-0 blur-md'
+          'opacity-100 blur-0' 
         }`}
       >
-        {/* Foreground Content */}
         <div className="absolute top-0 left-0 w-full h-full z-10 flex flex-col items-center justify-center text-white text-center px-4 gap-6">
           <img
               src="/profile.jpeg"

@@ -1,13 +1,7 @@
-const Education=() => {
-    return(
-        <>
-        Education
-        degree
-        github 
-        leetcode
-        greekfor greeks
-        </>
-    )
-}
+'use client' 
+import data from '@/Content.json';
+import Education from '@/components/Education';
 
-export default Education;
+export default function Educationpage() {
+    return <Education education={data.education} project={data.collegeProject[0]} />
+}

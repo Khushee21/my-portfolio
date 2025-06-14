@@ -1,0 +1,89 @@
+{
+  "education": [
+    {
+      "degree": "Master of Computer Applications (MCA)",
+      "institution": "Banasthali Vidyapith, Rajasthan",
+      "year": "2023 - 2025",
+      "img": "/clg/bv.png",
+      "cgpa":"9.5"
+    },
+    {
+      "degree": "Bachelor of Computer Application",
+      "institution": "Vikram University",
+      "year": "2020 - 2023",
+      "img": "/clg/vk.png",
+      "cgpa":"7.5"
+    }
+  ],
+  "collegeProject": [
+    {
+      "name": "FFF : Futility Food Fix",
+      "small-description" : "It is a Group project of 4 members ",
+      "description": "Warden Dashboard: Wardens can generate daily meal forms, mark student attendance, send reports to parents, and contact NGOs to manage leftover food efficiently \n Student Dashboard: Students can fill out daily meal forms and provide meal ratings to help improve food quality and planning.",
+      "img": [
+        "/projects/f1.jpeg",
+        "/projects/f2.jpeg",
+        "/projects/f3.jpeg"
+      ]
+    }
+  ],
+  "projectsData" : [
+  {
+    "title": "While(1)",
+    "description": "This platform promotes social learning by supporting three types of users: beginners, intermediates, and mentors. Beginners can explore and learn new technologies, intermediates can swap skills through real-time chat using Socket.IO, and mentors serve as guides. Users can send mentor requests via email, and once accepted, they’re added to one-on-one chats. The platform also offers tech courses, interview prep resources, and a resume builder.",
+    "image": ["/projects/w1.jpeg", "/projects/w2.jpeg", "/projects/w3.jpeg"],
+    "github": "https://github.com/Khushee21/while-1-.git",
+    "live": "https://while-1-kappa.vercel.app/",
+    "stack": ["React", "Node.js", "MongoDB", "Socket.IO", "Express.js"]
+  },
+  {
+    "title": "ByteBank",
+    "description": "A wallet app that tracks multi-currency transactions, including sending and receiving crypto.",
+    "image": ["/projects/b1.jpeg", "/projects/b2.jpeg"],
+    "github": "https://github.com/Khushee21/ByteBank.git",
+    "live": "https://byte-bank-o4m7.vercel.app/",
+    "stack": ["Next.js", "TypeScript", "Tailwind CSS", "Node.js"]
+  },
+  {
+    "title": "Food Render",
+    "description": "A food platform similar to Swiggy. Users can add items to the cart. Built using React and Redux Store for state management.",
+    "image": [
+      "/f1.png",
+      "/projects/f1.jpeg",
+      "/projects/f2.jpeg",
+      "/projects/f3.jpeg",
+      "/projects/f4.jpeg",
+      "/projects/f5.jpeg"
+    ],
+    "github": "https://github.com/Khushee21/FoodRender.git",
+    "live": "https://food-render.vercel.app/",
+    "stack": ["React", "Custom Hooks", "Redux Store"]
+  },
+  {
+    "title": "My Portfolio",
+    "description": "My personal portfolio showcasing my education, skills, and a built-in assistant.",
+    "image": ["/projects/f1.jpeg"],
+    "github": "https://github.com/Khushee21/my-portfolio.git",
+    "live": "https://femine-food-fix.vercel.app",
+    "stack": ["React", "Node.js", "MongoDB", "Socket.IO"]
+  },
+  {
+    "title": "Check Flow",
+    "description": "A to-do list app that allows you to add and remove tasks and view task history.",
+    "image": ["/projects/c1.jpeg"],
+    "github": "https://github.com/Khushee21/CheckFlow.git",
+    "live": "https://femine-food-fix.vercel.app",
+    "stack": ["Next.js", "Node.js", "MongoDB", "Socket.IO", "Express.js", "Shadcn"]
+  },
+  {
+    "title": "Netflix GPT",
+    "description": "A Netflix clone with JWT authentication and GPT integration for movie recommendations.",
+    "image": ["/projects/n1.jpeg"],
+    "github": "https://github.com/Khushee21/NETFLIX_GPT.git",
+    "live": "https://femine-food-fix.vercel.app",
+    "stack": ["React", "Node.js", "MongoDB", "Socket.IO", "OpenAI"]
+  }
+]
+
+
+}
