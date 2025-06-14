@@ -8,7 +8,7 @@ import Navbar from '@/components/Navbar';
 import { Project } from '@/components/Types/Usertype';
 import projectsData from '@/Content.json';
 import Footer from '@/components/Footer';
-import Chatbot from '@/app/chatbot/page';
+import Chatbot from '@/app/Chatbot/page';
 
 const techStacks=[ "React", "Next.js", "Java", "C", "TypeScript", "Node.js",
   "framer-motion", "MongoDB", "Socket.IO", "Tailwind CSS",

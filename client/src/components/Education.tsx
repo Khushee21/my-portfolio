@@ -6,7 +6,7 @@ import { SiLeetcode, SiGeeksforgeeks } from 'react-icons/si';
 import { EducationType } from '@/components/Types/Usertype';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import Chatbot from '@/app/chatbot/page';
+import Chatbot from '@/app/Chatbot/page';
 
 interface EducationProps {
   education: EducationType[];
