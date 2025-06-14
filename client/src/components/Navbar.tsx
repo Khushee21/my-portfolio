@@ -11,8 +11,8 @@ const Navbar = () => {
   const router= useRouter();
   const navLinks = [
     { href: '/about', label: 'ⓘAbout' },
-    { href: '/education', label: '🎓Education' },
-    { href: '/projects', label: '⚙️My Work' },
+    { href: '/Education', label: '🎓Education' },
+    { href: '/Projects', label: '⚙️My Work' },
     { href: '/contact', label: '✉Connect' },
   ];
 

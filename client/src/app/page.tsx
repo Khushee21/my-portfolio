@@ -83,13 +83,13 @@ setVantaEffect(
     About
   </button>
   <button
-    onClick={() => router.push('/education')}
+    onClick={() => router.push('/Education')}
     className="px-6 py-2 rounded-full text-white bg-transparent border border-zinc-50 font-semibold shadow-md hover:bg-white/15 hover:text-white transition duration-300"
   >
     Edu / Exp
   </button>
   <button
-    onClick={() => router.push('/projects')}
+    onClick={() => router.push('/Projects')}
     className="px-6 py-2 rounded-full text-white bg-transparent border border-zinc-50 font-semibold shadow-md hover:bg-white/15 hover:text-white transition duration-300"
   >
     My Work

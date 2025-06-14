@@ -45,7 +45,7 @@ export default function AboutPage() {
           content="From getting lost in while loops to confidently solving 600+ DSA problems, I have built myself piece by piece. My goal is to become a skilled Software Development Engineer (SDE) who can create technology that serves real-world needs I specilized in building dynamic, scalable, and seamless web applications.. I am currently pursuing MCA from Banasthali Vidyapith with a CGPA of 9.5. My passion lies in merging creativity with functionality. I’m deeply interested in building scalable web applications and solving complex problems using clean code and effective design systems."
         />
         <button
-          onClick={() => router.push('/projects')}
+          onClick={() => router.push('/Projects')}
            className="mt-6 px-6 py-2 bg-gradient-to-r from-orange-300  text-white rounded-full shadow-lg hover:scale-105 transition-all duration-300"
         >
             ➥ Click to see some glimpses of my work...

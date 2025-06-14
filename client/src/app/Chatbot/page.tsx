@@ -21,7 +21,7 @@ const Chatbot = () => {
 
     if (lowerInput.includes('project')) {
       botReply = 'Khushi has built amazing projects! Redirecting you to Projects...';
-      router.push('/projects');
+      router.push('/Projects');
     }  else if (lowerInput.includes('contact') || lowerInput.includes('connect') || lowerInput.includes('talk')) {
       botReply = 'Taking you to the Contact page. Let’s connect!';
       router.push('/contact');
