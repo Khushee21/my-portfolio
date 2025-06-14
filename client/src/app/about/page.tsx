@@ -6,7 +6,7 @@ import AboutSection from '@/components/AboutSection';
 import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
 import Footer from '@/components/Footer';
-import Chatbot from '../chatbot/page';
+import Chatbot from '@/app/chatbot/page';
 
 
 export default function AboutPage() {

@@ -5,8 +5,8 @@ import { FaGithub, FaLaptopCode } from 'react-icons/fa';
 import { SiLeetcode, SiGeeksforgeeks } from 'react-icons/si';
 import { EducationType } from '@/components/Types/Usertype';
 import Navbar from './Navbar';
-import { useEffect , useState } from 'react';
 import Footer from './Footer';
+import Chatbot from '@/app/chatbot/page';
 
 interface EducationProps {
   education: EducationType[];
@@ -25,6 +25,7 @@ const Education = ({ education, project }: EducationProps) => {
     <div className="min-h-screen bg-[#0F0F0F] text-white py-12 px-6">
       {/* Section Title */}
       <Navbar/>
+      <Chatbot/>
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
