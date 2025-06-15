@@ -124,8 +124,8 @@ const Education = ({ education, project }: EducationProps) => {
           </a>
         </div>
       </motion.div>
+      <Footer/>
     </div>
-    <Footer/>
     </>
   );
 };

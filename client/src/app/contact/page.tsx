@@ -34,7 +34,7 @@ const Contact = () => {
       />
 
       <form
-        action="https://formspree.io/f/your_form_id"
+        action="https://formspree.io/f/xzzggroo"
         method="POST"
         className="w-full max-w-xl space-y-6 bg-[#1a1a1a] p-8 rounded-3xl shadow-lg border border-orange-400/30 backdrop-blur-md"
       >
@@ -81,8 +81,8 @@ const Contact = () => {
           Send Message <Send size={18} />
         </button>
       </form>
+       <Footer/>
     </motion.div>
-    <Footer/>
     </>
   );
 };

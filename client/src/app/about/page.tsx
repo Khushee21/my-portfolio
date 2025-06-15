@@ -21,7 +21,7 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <>
+    <div className='bg-[#0F0F0F]'>
     <motion.div
       className="min-h-screen bg-[#0F0F0F] text-white px-6 py-10 mt-10"
       initial={{ opacity: 0 }}
@@ -205,9 +205,8 @@ export default function AboutPage() {
     Here we go
   </button>
 </section>
-
+   <Footer/>
     </motion.div>
-    <Footer/>
-    </>
+    </div>
   );
 }

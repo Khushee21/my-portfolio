@@ -168,8 +168,8 @@ const Projects = () => {
           )}
         </AnimatePresence>
       </div>
+      <Footer/>
     </motion.div>
-    <Footer/>
     </>
   );
 };
