@@ -59,7 +59,7 @@ const Projects = () => {
             animate={{ x: ['0%', '-50%'] }}
             transition={{ repeat: Infinity, duration: 15, ease: 'linear' }}
           >
-            {projectList[selected!].stack.map((tech: string, idx: number) => (
+            {[...techStacks, ...techStacks].map((tech, idx) => (
               <span
                 key={idx}
                 className="inline-block mx-6 text-orange-300 font-semibold text-3xl"
@@ -136,7 +136,7 @@ const Projects = () => {
                   {projectList[selected].description}
                 </p>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {[...techStacks, ...techStacks].map((tech : string, idx : number) => (
+                  {projectList[selected].stack.map((tech : string, idx : number) => (
                     <span
                       key={idx}
                       className="bg-pink-500/20 text-pink-300 px-3 py-1 text-sm rounded-full"
