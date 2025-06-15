@@ -12,6 +12,6 @@ export interface Project {
     image:string;
     github:string;
     live:string;
-    stack:string;
+    stack:string[];
 }
 

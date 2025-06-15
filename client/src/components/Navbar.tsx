@@ -49,14 +49,14 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-  <div className="md:hidden w-dvh h-lvh absolute top-[60px] left-4 right-4 mt-4 bg-gradient-to-r from-orange-300 bg-opacity-30 backdrop-blur-xl rounded-xl p-5 flex flex-col gap-4 transition-all duration-300 shadow-lg">
+  <div className="md:hidden w-dvh h-lvh absolute top-[60px] justify-center  left-10 mt-4 bg-black/50 bg-opacity-30 backdrop-blur-xl rounded-full pl-15 flex flex-col gap-5 transition-all duration-300 shadow-lg ">
     {navLinks.map(({ href, label }) => (
       <Link
         key={href}
         href={href}
         onClick={() => setIsOpen(false)}
-        className={`text-base  font-bold transition-all duration-300 hover:text-orange-700 ${
-          pathname === href ? 'text-white-500' : 'text-black'
+        className={`text-3xl  font-bold transition-all duration-300 hover:text-orange-700 ${
+          pathname === href ? 'text-white-500' : 'text-orange-300'
         }`}
       >
         {label}

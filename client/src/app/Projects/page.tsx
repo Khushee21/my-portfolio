@@ -59,7 +59,7 @@ const Projects = () => {
             animate={{ x: ['0%', '-50%'] }}
             transition={{ repeat: Infinity, duration: 15, ease: 'linear' }}
           >
-            {[...techStacks, ...techStacks].map((tech, idx) => (
+            {projectList[selected!].stack.map((tech: string, idx: number) => (
               <span
                 key={idx}
                 className="inline-block mx-6 text-orange-300 font-semibold text-3xl"
