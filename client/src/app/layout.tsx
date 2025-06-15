@@ -1,10 +1,8 @@
-
-
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Poppins, Ubuntu, Nunito } from "next/font/google";
-import Script from "next/script"; 
+import Script from "next/script";
 
 const poppins = Poppins({
   weight: ['400', '500', '700'],
@@ -50,24 +48,32 @@ export default function RootLayout({
         <title>Khushi's Portfolio</title>
         <meta name="description" content="Portfolio of Khushi Rathore" />
 
-        {/* Vanta Background Scripts */}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.birds.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js"></script>
+        {/* ✅ Vanta Scripts via Script component */}
+        <Script
+          src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"
+          strategy="beforeInteractive"
+        />
+        <Script
+          src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.birds.min.js"
+          strategy="beforeInteractive"
+        />
+        <Script
+          src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js"
+          strategy="beforeInteractive"
+        />
 
-        {/*  Google Analytics Script */}
+
         <Script
           async
-          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"
+          src="https://www.googletagmanager.com/gtag/js?id=G-HRXERE0YT3"
         />
-        <Script id="google-analytics">
+        <Script id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-XXXXXXX'); 
+            gtag('config', 'G-HRXERE0YT3');
           `}
-           {/*UPDATE KRNA BAKI H....................................................................*/}
         </Script>
       </head>
       <body className={`${poppins.variable} ${ubuntu.variable} ${nunito.variable} ${geistSans.variable} ${geistMono.variable} font-poppins antialiased`}>
