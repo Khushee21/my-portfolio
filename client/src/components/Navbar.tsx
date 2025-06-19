@@ -10,10 +10,10 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router= useRouter();
   const navLinks = [
-    { href: '/about', label: 'ⓘAbout' },
-    { href: '/Education', label: '🎓Education' },
-    { href: '/Projects', label: '⚙️My Work' },
-    { href: '/contact', label: '✉Connect' },
+    { href: '/about', label: 'About' },
+    { href: '/Education', label: 'Education' },
+    { href: '/Projects', label: 'My Work' },
+    { href: '/contact', label: 'Connect' },
   ];
 
   return (
@@ -55,7 +55,7 @@ const Navbar = () => {
         key={href}
         href={href}
         onClick={() => setIsOpen(false)}
-        className={`text-3xl  font-bold transition-all duration-300 hover:text-orange-700 ${
+        className={`text-2xl  font-bold transition-all duration-300  ${
           pathname === href ? 'text-white-500' : 'text-orange-300'
         }`}
       >

@@ -34,7 +34,7 @@
     "image": ["/projects/w1.jpeg", "/projects/w2.jpeg", "/projects/w3.jpeg"],
     "github": "https://github.com/Khushee21/while-1-.git",
     "live": "https://while-1-kappa.vercel.app/",
-    "stack": ["React", "Node.js", "MongoDB", "Socket.IO", "Express.js"]
+    "stack": ["React", "Node.js", "MongoDB", "Socket.IO", "Express.js" ]
   },
   {
     "title": "ByteBank",
@@ -42,17 +42,14 @@
     "image": ["/projects/b1.jpeg", "/projects/b2.jpeg"],
     "github": "https://github.com/Khushee21/ByteBank.git",
     "live": "https://byte-bank-o4m7.vercel.app/",
-    "stack": ["Next.js", "TypeScript", "Tailwind CSS", "Node.js"]
+    "stack": ["Next.js", "TypeScript", "Tailwind CSS", "Node.js" ,"Express.js"]
   },
   {
     "title": "Food Render",
     "description": "A food platform similar to Swiggy. Users can add items to the cart. Built using React and Redux Store for state management.",
     "image": [
-      "/f1.png",
-      "/projects/f1.jpeg",
-      "/projects/f2.jpeg",
-      "/projects/f3.jpeg",
       "/projects/f4.jpeg",
+      "/projects/f6.jpeg",
       "/projects/f5.jpeg"
     ],
     "github": "https://github.com/Khushee21/FoodRender.git",
@@ -62,10 +59,10 @@
   {
     "title": "My Portfolio",
     "description": "My personal portfolio showcasing my education, skills, and a built-in assistant.",
-    "image": ["/projects/f1.jpeg"],
+    "image": ["/projects/po1.jpeg"],
     "github": "https://github.com/Khushee21/my-portfolio.git",
-    "live": "https://femine-food-fix.vercel.app",
-    "stack": ["React", "Node.js", "MongoDB", "Socket.IO"]
+    "live": "https://my-portfolio-dusky-ten-18.vercel.app/",
+    "stack": [ "Node.js", "MongoDB", "Socket.IO" , "Three.js" , "Next.js"]
   },
   {
     "title": "Check Flow",

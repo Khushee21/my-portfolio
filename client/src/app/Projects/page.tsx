@@ -10,13 +10,13 @@ import projectsData from '@/Content.json';
 import Footer from '@/components/Footer';
 import Chatbot from '@/app/Chatbot/page';
 
-const techStacks=[ "React", "Next.js", "Java", "C", "TypeScript", "Node.js",
+const techStacks = [
+  "React", "Next.js", "Java", "C", "TypeScript", "Node.js",
   "framer-motion", "MongoDB", "Socket.IO", "Tailwind CSS",
-  "JWT", "Render", "Redux Store", "Vercel", "Shadcn"]
-
+  "JWT", "Render", "Redux Store", "Vercel", "Shadcn"
+];
 
 const typedProjectsData = projectsData as unknown as { projectsData: Project[] };
-
 const projectList: Project[] = typedProjectsData.projectsData;
 
 const Projects = () => {
@@ -32,37 +32,35 @@ const Projects = () => {
           setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
         }
       }, 3000);
-
       return () => clearInterval(interval);
     }
   }, [selected]);
 
   return (
     <>
-    
-    <motion.div
-      className="min-h-screen bg-[#0F0F0F] text-white px-6 py-10 mt-2"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-    >
-      <div className="py-12 px-6 text-white min-h-screen">
+      <motion.div
+        className="min-h-screen bg-[#0F0F0F] text-white px-4 sm:px-6 py-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
         <Navbar />
-        <Chatbot/>
-        <h2 className="text-3xl font-bold mb-6 text-center mt-10">My Showcase</h2>
-        <h3 className="text-center mb-8">Here is my creativity...</h3>
+        <Chatbot />
+
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mt-12 text-orange-300">My Showcase</h2>
+        <h3 className="text-base sm:text-lg text-center mb-10 text-gray-300">Here is my creativity...</h3>
 
         {/* Tech stack ticker */}
-        <div className="overflow-hidden whitespace-nowrap mb-10 border-y border-gray-700 py-3 relative">
+        <div className="overflow-hidden whitespace-nowrap mb-10 border-y border-gray-700 py-3">
           <motion.div
             className="inline-flex"
             animate={{ x: ['0%', '-50%'] }}
-            transition={{ repeat: Infinity, duration: 15, ease: 'linear' }}
+            transition={{ repeat: Infinity, duration: 20, ease: 'linear' }}
           >
             {[...techStacks, ...techStacks].map((tech, idx) => (
               <span
                 key={idx}
-                className="inline-block mx-6 text-orange-300 font-semibold text-3xl"
+                className="inline-block mx-6 text-orange-300 font-semibold text-xl sm:text-2xl"
               >
                 {tech}
               </span>
@@ -70,10 +68,11 @@ const Projects = () => {
           </motion.div>
         </div>
 
-        <div className="absolute top-0 right-0 blob w-[50vw] h-[100vh] rounded-full opacity-40 blur-3xl z-0 pointer-events-none"></div>
+        {/* Background blob */}
+        <div className="absolute top-0 right-0 blob w-[60vw] h-[100vh] rounded-full opacity-30 blur-3xl z-0 pointer-events-none" />
 
         {/* Project cards */}
-        <div className="grid md:grid-cols-2 gap-8 z-10 relative">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
           {projectList.map((project, index) => (
             <motion.div
               key={index}
@@ -86,7 +85,7 @@ const Projects = () => {
                 alt={project.title}
                 width={500}
                 height={300}
-                className="object-cover w-full h-56 hover:opacity-80"
+                className="object-cover w-full h-48 sm:h-56 md:h-64"
               />
               <div className="p-4">
                 <h3 className="text-xl font-bold text-orange-300 mb-2">{project.title}</h3>
@@ -96,20 +95,20 @@ const Projects = () => {
           ))}
         </div>
 
-        {/* Expanded view */}
+        {/* Expanded Modal */}
         <AnimatePresence>
           {selected !== null && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed top-0 left-0 w-full h-full bg-black/80 flex items-center justify-center z-50 px-4"
+              className="fixed inset-0 bg-black/80 flex items-center justify-center z-[1000] p-4"
             >
               <motion.div
-                initial={{ scale: 0.9 }}
+                initial={{ scale: 0.95 }}
                 animate={{ scale: 1 }}
-                exit={{ scale: 0.9 }}
-                className="bg-[#1a1a1a] rounded-2xl shadow-lg max-w-2xl w-full p-6 relative"
+                exit={{ scale: 0.95 }}
+                className="bg-[#1a1a1a] rounded-2xl shadow-lg w-full max-w-2xl p-4 sm:p-6 relative"
               >
                 <button
                   className="absolute top-4 right-4 text-white hover:text-orange-300"
@@ -127,16 +126,16 @@ const Projects = () => {
                   alt={`${projectList[selected].title} image`}
                   width={600}
                   height={400}
-                  className="rounded-xl mb-4 object-cover transition duration-700 ease-in-out"
+                  className="rounded-xl mb-4 object-cover w-full max-h-[300px] sm:max-h-[400px]"
                 />
+
                 <h3 className="text-2xl font-bold text-orange-300 mb-2">
                   {projectList[selected].title}
                 </h3>
-                <p className="text-gray-300 mb-4">
-                  {projectList[selected].description}
-                </p>
+                <p className="text-gray-300 mb-4">{projectList[selected].description}</p>
+
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {projectList[selected].stack.map((tech : string, idx : number) => (
+                  {projectList[selected].stack.map((tech: string, idx: number) => (
                     <span
                       key={idx}
                       className="bg-pink-500/20 text-pink-300 px-3 py-1 text-sm rounded-full"
@@ -145,7 +144,8 @@ const Projects = () => {
                     </span>
                   ))}
                 </div>
-                <div className="flex gap-6">
+
+                <div className="flex flex-col sm:flex-row gap-4">
                   <a
                     href={projectList[selected].github}
                     target="_blank"
@@ -167,9 +167,9 @@ const Projects = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-      <Footer/>
-    </motion.div>
+
+        <Footer />
+      </motion.div>
     </>
   );
 };
