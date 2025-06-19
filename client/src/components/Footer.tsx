@@ -28,7 +28,7 @@ const Footer = () => {
             <FaTwitter />
           </a>
           <a
-            href="https://www.linkedin.com/in/khushi-rathore-5363a8257"
+            href="https://www.linkedin.com/in/khushi-rathore-5363a8257/"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-gray-400 transition"
