@@ -47,6 +47,7 @@ export default function RootLayout({
       <head>
         <title>Khushi's Portfolio</title>
         <meta name="description" content="Portfolio of Khushi Rathore" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         {/* ✅ Vanta Scripts via Script component */}
         <Script
