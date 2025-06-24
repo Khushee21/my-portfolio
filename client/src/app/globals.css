@@ -7,20 +7,20 @@
   --font-sans: 'Poppins', sans-serif;
 }
 
-/* @theme inline {
+@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans); /* Updated here too */
   --font-mono: var(--font-geist-mono);
-} */
+}
 
-:root {
+/* :root {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
 }
-
+ */
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -45,7 +45,7 @@ body {
   );
 }
 
-/* .text-reveal {
+.text-reveal {
   display: inline;
   background: linear-gradient(
     to right,
@@ -59,9 +59,9 @@ body {
   background-position: right bottom;
   color: transparent;
   background-repeat: no-repeat;
-} */
+}
 
-:root {
+/* :root {
   --opacity-color: 255, 255, 255; /* white as default RGB */
 }
 
@@ -80,7 +80,7 @@ body {
   color: transparent;
   background-repeat: no-repeat;
 }
-
+ */
 
 /* In globals.css or any CSS module */
 .bubble {
