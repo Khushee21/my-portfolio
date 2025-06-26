@@ -50,7 +50,8 @@ export default function Home() {
     };
   }, [vantaEffect]);
 
-  return (
+  return (<>
+
     <div className="relative h-screen w-screen overflow-hidden text-white">
       <motion.div
         ref={vantaRef}
@@ -100,5 +101,6 @@ export default function Home() {
         </div>
       </motion.div>
     </div>
+  </>
   );
 }
