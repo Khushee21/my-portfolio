@@ -6,6 +6,8 @@ import Image from 'next/image';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import Chatbot from '@/app/Chatbot/page';
+import Lottie from 'lottie-react';
+import contactAnimation from '@/components/asserts/contact.json';
 
 const Contact = () => {
   return (
@@ -31,12 +33,10 @@ const Contact = () => {
           I’ll get back to you as soon as possible!
         </p>
 
-        <Image
-          src="/contact.png"
-          alt="Contact"
-          width={280}
-          height={280}
-          className="mb-8 rounded-xl shadow-xl object-contain"
+        <Lottie
+          animationData={contactAnimation}
+          loop={true}
+          className="w-72 h-72 mb-8 rounded-xl shadow-xl"
         />
 
         <form

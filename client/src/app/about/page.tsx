@@ -7,6 +7,47 @@ import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
 import Footer from '@/components/Footer';
 import Chatbot from '@/app/Chatbot/page';
+import {
+  SiReact,
+  SiRedux,
+  SiNextdotjs,
+  SiTypescript,
+  SiTailwindcss,
+  SiNodedotjs,
+  SiFirebase,
+  SiJsonwebtokens,
+  SiExpress,
+  SiSocketdotio,
+  SiMongodb,
+  SiGithub,
+  SiVercel,
+  SiFigma,
+  SiPostman,
+  SiChakraui,
+  SiFramer,
+  SiShadcnui,
+} from 'react-icons/si';
+
+const techIcons: Record<string, React.ReactNode> = {
+  'React.js': <SiReact />,
+  'Redux Store': <SiRedux />,
+  'Next.js': <SiNextdotjs />,
+  'TypeScript': <SiTypescript />,
+  'Tailwind CSS': <SiTailwindcss />,
+  'Node.js': <SiNodedotjs />,
+  'Firebase': <SiFirebase />,
+  'JWT Token': <SiJsonwebtokens />,
+  'Express.js': <SiExpress />,
+  'Socket.IO': <SiSocketdotio />,
+  'MongoDB': <SiMongodb />,
+  'GitHub': <SiGithub />,
+  'Vercel': <SiVercel />,
+  'Figma': <SiFigma />,
+  'Postman': <SiPostman />,
+  'Framer Motion': <SiFramer />,
+  'Chakra UI': <SiChakraui />,
+  'Shadcn': <SiShadcnui />, // fallback to default icon if needed
+};
 
 
 export default function AboutPage() {
@@ -21,9 +62,9 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <div className='bg-[#0F0F0F]'>
+    <div className='bg-[#0F0F0F] top-0 mt-0 min-h-screen '>
       <motion.div
-        className="min-h-screen bg-[#0F0F0F] text-white px-4 sm:px-8 py-10 mt-10"
+        className="min-h-screen bg-[#0F0F0F] text-white px-4 sm:px-8 py-10 "
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
@@ -62,7 +103,7 @@ export default function AboutPage() {
           />
 
           <AboutSection
-            title=" Tech Stack"
+            title="Tech Stack"
             content={
               <ul className="pl-0 space-y-6 list-none text-sm sm:text-base">
                 {([
@@ -78,15 +119,15 @@ export default function AboutPage() {
                       {items.map((tech, i) => (
                         <span
                           key={i}
-                          className="bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit"
+                          className="flex items-center gap-2 bg-transparent border py-1.5 rounded-full border-zinc-50 px-4 w-fit"
                         >
-                          {tech}
+                          <span className="text-lg">{techIcons[tech] ?? '🛠️'}</span>
+                          <span>{tech}</span>
                         </span>
                       ))}
                     </div>
                   </li>
                 ))}
-
               </ul>
             }
           />
