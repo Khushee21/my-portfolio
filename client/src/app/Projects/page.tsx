@@ -9,6 +9,8 @@ import { Project } from '@/components/Types/Usertype';
 import projectsData from '@/Content.json';
 import Footer from '@/components/Footer';
 import Chatbot from '@/app/Chatbot/page';
+import Tilt from 'react-parallax-tilt'; // ⬅️ add this at the top with other imports
+
 
 const techStacks = [
   "React", "Next.js", "Java", "C", "TypeScript", "Node.js",
@@ -107,22 +109,25 @@ const Projects = () => {
               show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
             }}
           >
-            <div
-              onClick={() => setSelectedProject(project)}
-              className="cursor-pointer bg-[#1a1a1a] rounded-xl overflow-hidden shadow-md hover:shadow-pink-500/40 transition-all"
-            >
-              <Image
-                src={Array.isArray(project.image) ? project.image[0] : project.image}
-                alt={project.title}
-                width={400}
-                height={800}
-                className="object-cover w-full h-72 transition-transform duration-300"
-              />
-              <div className="p-4">
-                <h3 className="text-xl font-bold text-orange-300 mb-2">{project.title}</h3>
-                <p className="text-sm text-gray-300 line-clamp-3">{project.description}</p>
+            <Tilt glareEnable={true} glareMaxOpacity={0.3} glareColor="#ff8800" glarePosition="all" tiltMaxAngleX={10} tiltMaxAngleY={10}>
+              <div
+                onClick={() => setSelectedProject(project)}
+                className="cursor-pointer bg-[#1a1a1a] rounded-xl overflow-hidden shadow-md hover:shadow-pink-500/40 transition-all"
+              >
+                <Image
+                  src={Array.isArray(project.image) ? project.image[0] : project.image}
+                  alt={project.title}
+                  width={400}
+                  height={800}
+                  className="object-cover w-full h-72 transition-transform duration-300"
+                />
+                <div className="p-4">
+                  <h3 className="text-xl font-bold text-orange-300 mb-2">{project.title}</h3>
+                  <p className="text-sm text-gray-300 line-clamp-3">{project.description}</p>
+                </div>
               </div>
-            </div>
+            </Tilt>
+
           </motion.div>
         ))}
       </motion.div>
