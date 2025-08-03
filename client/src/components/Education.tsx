@@ -1,12 +1,13 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { FaGithub, FaLaptopCode , FaTwitter} from 'react-icons/fa';
+import { FaGithub, FaLaptopCode, FaMedium, FaTwitter } from 'react-icons/fa';
 import { SiLeetcode, SiGeeksforgeeks } from 'react-icons/si';
 import { EducationType } from '@/components/Types/Usertype';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Chatbot from '@/app/Chatbot/page';
+import AboutSection from '@/components/AboutSection';
 
 interface EducationProps {
   education: EducationType[];
@@ -94,60 +95,43 @@ const Education = ({ education, project }: EducationProps) => {
             <SiGeeksforgeeks title="GeeksforGeeks" />
           </a>
           <a
+            href="https://medium.com/@khushirathore649"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-gray-400 transition"
+          >
+            <FaMedium />
+          </a>
+          <a
             href="https://x.com/KhushieRathore"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-gray-400 transition"
           >
-           <FaTwitter/>
+            <FaTwitter />
           </a>
         </motion.div>
 
-        {/* College Project Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="bg-[#1a1a1a] p-4 sm:p-6 rounded-xl shadow-md border border-gray-700 max-w-5xl mx-auto"
-        >
-          <h3 className="text-xl sm:text-2xl font-bold text-orange-300 mb-3">
-            Major College Project
-          </h3>
-          <p className="text-base sm:text-lg font-semibold text-white mb-2">{project.name}</p>
-          <p className="text-sm text-gray-400 mb-4">Some of the Glimpse...</p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-            {project.img.map((image, idx) => (
-              <img
-                key={idx}
-                src={image}
-                alt={`project-${idx}`}
-                className="rounded-lg border border-gray-600 object-cover w-full h-48 sm:h-56 md:h-64"
-              />
-            ))}
-          </div>
-
-          <p className="text-sm text-gray-300 mb-4">{project.description}</p>
-
-          <div className="flex flex-col sm:flex-row gap-4 mt-4">
-            <a
-              href="https://github.com/Khushee21/Futility-Food-Fix.git"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-400 hover:underline text-sm flex items-center gap-1"
-            >
-              <FaGithub /> GitHub
-            </a>
-            <a
-              href="https://femine-food-fix.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-green-400 hover:underline text-sm flex items-center gap-1"
-            >
-              <FaLaptopCode /> Live Demo
-            </a>
-          </div>
-        </motion.div>
+        <AboutSection
+          title="Work Experience"
+          content={
+            <>
+              <div className="flex flex-wrap items-center gap-3 mb-2">
+                <img src="/newral.webp" alt="Newral Logo" className="h-10 w-auto" />
+                <h3 className="text-base md:text-lg font-semibold">
+                  Intern at Newral (May – July 2025):
+                </h3>
+              </div>
+              <ul className="list-disc pl-6 space-y-1 text-sm sm:text-base">
+                <li>Contributed to real-time projects using Next.js, TypeScript, Node.js, Express, and MongoDB</li>
+                <li>Worked on both frontend and backend development</li>
+                <li>Collaborated with an amazing team in an Agile environment</li>
+                <li>Worked on core projects like AssumeChat (real-time chat app), LMS platform, Matka App, and the official website of Newral</li>
+                <li>Improved UI performance, enhanced component reusability, and implemented scalable layouts</li>
+              </ul>
+            </>
+          }
+        />
 
         <Footer />
       </div>

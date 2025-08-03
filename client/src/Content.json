@@ -3,22 +3,22 @@
     {
       "degree": "Master of Computer Applications (MCA)",
       "institution": "Banasthali Vidyapith, Rajasthan",
-      "year": "2023 - 2025",
+      "year": "2024 - 2026",
       "img": "/clg/bv.png",
-      "cgpa":"9.5"
+      "cgpa": "9.5"
     },
     {
       "degree": "Bachelor of Computer Application",
       "institution": "Vikram University",
-      "year": "2020 - 2023",
+      "year": "2021 - 2024",
       "img": "/clg/vk.png",
-      "cgpa":"7.5"
+      "cgpa": "7.5"
     }
   ],
   "collegeProject": [
     {
       "name": "FFF : Futility Food Fix",
-      "small-description" : "It is a Group project of 4 members ",
+      "small-description": "It is a Group project of 4 members ",
       "description": "Warden Dashboard: Wardens can generate daily meal forms, mark student attendance, send reports to parents, and contact NGOs to manage leftover food efficiently \n Student Dashboard: Students can fill out daily meal forms and provide meal ratings to help improve food quality and planning.",
       "img": [
         "/projects/f1.jpeg",
@@ -27,60 +27,135 @@
       ]
     }
   ],
-  "projectsData" : [
-  {
-    "title": "While(1)",
-    "description": "This platform promotes social learning by supporting three types of users: beginners, intermediates, and mentors. Beginners can explore and learn new technologies, intermediates can swap skills through real-time chat using Socket.IO, and mentors serve as guides. Users can send mentor requests via email, and once accepted, they’re added to one-on-one chats. The platform also offers tech courses, interview prep resources, and a resume builder.",
-    "image": ["/projects/w1.jpeg", "/projects/w2.jpeg", "/projects/w3.jpeg"],
-    "github": "https://github.com/Khushee21/while-1-.git",
-    "live": "https://while-1-kappa.vercel.app/",
-    "stack": ["React", "Node.js", "MongoDB", "Socket.IO", "Express.js" ]
-  },
-  {
-    "title": "ByteBank",
-    "description": "A wallet app that tracks multi-currency transactions, including sending and receiving crypto.",
-    "image": ["/projects/b1.jpeg", "/projects/b2.jpeg"],
-    "github": "https://github.com/Khushee21/ByteBank.git",
-    "live": "https://byte-bank-o4m7.vercel.app/",
-    "stack": ["Next.js", "TypeScript", "Tailwind CSS", "Node.js" ,"Express.js"]
-  },
-  {
-    "title": "Food Render",
-    "description": "A food platform similar to Swiggy. Users can add items to the cart. Built using React and Redux Store for state management.",
-    "image": [
-      "/projects/f4.jpeg",
-      "/projects/f6.jpeg",
-      "/projects/f5.jpeg"
-    ],
-    "github": "https://github.com/Khushee21/FoodRender.git",
-    "live": "https://food-render.vercel.app/",
-    "stack": ["React", "Custom Hooks", "Redux Store"]
-  },
-  {
-    "title": "My Portfolio",
-    "description": "My personal portfolio showcasing my education, skills, and a built-in assistant.",
-    "image": ["/projects/po1.jpeg"],
-    "github": "https://github.com/Khushee21/my-portfolio.git",
-    "live": "https://my-portfolio-dusky-ten-18.vercel.app/",
-    "stack": [ "Node.js", "MongoDB", "Socket.IO" , "Three.js" , "Next.js"]
-  },
-  {
-    "title": "Check Flow",
-    "description": "A to-do list app that allows you to add and remove tasks and view task history.",
-    "image": ["/projects/c1.jpeg"],
-    "github": "https://github.com/Khushee21/CheckFlow.git",
-    "live": "https://femine-food-fix.vercel.app",
-    "stack": ["Next.js", "Node.js", "MongoDB", "Socket.IO", "Express.js", "Shadcn"]
-  },
-  {
-    "title": "Netflix GPT",
-    "description": "A Netflix clone with JWT authentication and GPT integration for movie recommendations.",
-    "image": ["/projects/n1.jpeg"],
-    "github": "https://github.com/Khushee21/NETFLIX_GPT.git",
-    "live": "https://femine-food-fix.vercel.app",
-    "stack": ["React", "Node.js", "MongoDB", "Socket.IO", "OpenAI"]
-  }
-]
-
-
+  "projectsData": [
+    {
+      "title": "While(1)",
+      "type": "website",
+      "description": "This platform promotes social learning by supporting three types of users: beginners, intermediates, and mentors. Beginners can explore and learn new technologies, intermediates can swap skills through real-time chat using Socket.IO, and mentors serve as guides. Users can send mentor requests via email, and once accepted, they’re added to one-on-one chats. The platform also offers tech courses, interview prep resources, and a resume builder.",
+      "image": [
+        "/projects/w1.jpeg",
+        "/projects/w2.jpeg",
+        "/projects/w3.jpeg"
+      ],
+      "github": "https://github.com/Khushee21/while-1-.git",
+      "live": "https://while-1-kappa.vercel.app/",
+      "stack": [
+        "React",
+        "Node.js",
+        "MongoDB",
+        "Socket.IO",
+        "Express.js"
+      ]
+    },
+    {
+      "title": "ByteBank",
+      "description": "A wallet app that tracks multi-currency transactions, including sending and receiving crypto.",
+      "type": "website",
+      "image": [
+        "/projects/b1.jpeg",
+        "/projects/b2.jpeg"
+      ],
+      "github": "https://github.com/Khushee21/ByteBank.git",
+      "live": "https://byte-bank-o4m7.vercel.app/",
+      "stack": [
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "Node.js",
+        "Express.js"
+      ]
+    },
+    {
+      "title": "Food Render",
+      "type": "website",
+      "description": "A food platform similar to Swiggy. Users can add items to the cart. Built using React and Redux Store for state management.",
+      "image": [
+        "/projects/f4.jpeg",
+        "/projects/f6.jpeg",
+        "/projects/f5.jpeg"
+      ],
+      "github": "https://github.com/Khushee21/FoodRender.git",
+      "live": "https://food-render.vercel.app/",
+      "stack": [
+        "React",
+        "Custom Hooks",
+        "Redux Store"
+      ]
+    },
+    {
+      "title": "My Portfolio",
+      "type": "website",
+      "description": "My personal portfolio showcasing my education, skills, and a built-in assistant.",
+      "image": [
+        "/projects/po1.jpeg"
+      ],
+      "github": "https://github.com/Khushee21/my-portfolio.git",
+      "live": "https://my-portfolio-dusky-ten-18.vercel.app/",
+      "stack": [
+        "Node.js",
+        "MongoDB",
+        "Socket.IO",
+        "Three.js",
+        "Next.js"
+      ]
+    },
+    {
+      "title": "Netflix GPT",
+      "type": "website",
+      "description": "A Netflix clone with JWT authentication and GPT integration for movie recommendations.",
+      "image": [
+        "/projects/n1.jpeg"
+      ],
+      "github": "https://github.com/Khushee21/NETFLIX_GPT.git",
+      "live": "https://femine-food-fix.vercel.app",
+      "stack": [
+        "React",
+        "Node.js",
+        "MongoDB",
+        "Socket.IO",
+        "OpenAI"
+      ]
+    },
+    {
+      "title": "Expiry Alert ",
+      "type": "app",
+      "description": "A React Native app to track expiry dates of goods. Users can add product details manually through a form or automatically using camera-based OCR. The app notifies users before the items expire",
+      "image": [
+        "/projects/expiry1.jpeg",
+        "/projects/expiry2.jpeg",
+        "/projects/expiry3.jpeg",
+        "/projects/expiry4.jpeg"
+      ],
+      "github": "https://github.com/Khushee21/Expiry-Alert.git",
+      "live": "",
+      "stack": [
+        "React Native",
+        "Node js",
+        "MongoDB",
+        "Shad cn",
+        "Toast"
+      ]
+    },
+    {
+      "title": "GramRozgaar",
+      "type": "app",
+      "description": "GramRozgaar is a bilingual (Hindi/English) employment app designed to empower villagers by connecting them with local job opportunities. The app features both light and dark modes and provides detailed profiles of workers and available machinery. Users can view nearby workers on an interactive map for easy access and hiring.",
+      "image": [
+        "/projects/gramRozgaar1.jpeg",
+        "/projects/gramRozgaar2.jpeg",
+        "/projects/gramRozgaar3.jpeg",
+        "/projects/gramRozgaar4.jpeg"
+      ],
+      "github": "https://github.com/Khushee21/GramRozgaar.git",
+      "live": "",
+      "stack": [
+        "React Native",
+        "Nest.js",
+        "Prisma",
+        "PostgreSQL",
+        "Socket.IO",
+        "Docker"
+      ]
+    }
+  ]
 }

@@ -55,7 +55,8 @@ const Chatbot = () => {
       lowerInput.includes('special') ||
       lowerInput.includes('hire') ||
       lowerInput.includes('she') ||
-      lowerInput.includes('her')
+      lowerInput.includes('her') ||
+      lowerInput.includes('khushi')
     ) {
       botReply =
         'She is hardworking, consistent, detail-oriented, and a great team player. Collaborate with her — she’s amazing! ✨';
@@ -81,7 +82,7 @@ const Chatbot = () => {
     ) {
       botReply = 'Hmmmm...';
     } else {
-      botReply = 'Maalik se puch kar batata hu 😅';
+      botReply = 'I’m not sure I understand. Can you explain it a bit more? 😅';
     }
 
     setMessages((prev) => [...prev, userMessage, { from: 'bot', text: botReply }]);
@@ -111,16 +112,14 @@ const Chatbot = () => {
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className={`${
-                  msg.from === 'user' ? 'text-right' : 'text-left text-gray-700'
-                }`}
+                className={`${msg.from === 'user' ? 'text-right' : 'text-left text-gray-700'
+                  }`}
               >
                 <span
-                  className={`inline-block px-3 py-2 rounded-lg max-w-[85%] ${
-                    msg.from === 'user'
-                      ? 'bg-orange-100 text-black'
-                      : 'bg-gray-200 text-gray-800'
-                  }`}
+                  className={`inline-block px-3 py-2 rounded-lg max-w-[85%] ${msg.from === 'user'
+                    ? 'bg-orange-100 text-black'
+                    : 'bg-gray-200 text-gray-800'
+                    }`}
                 >
                   {msg.text}
                 </span>

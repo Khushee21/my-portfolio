@@ -46,7 +46,7 @@ const techIcons: Record<string, React.ReactNode> = {
   'Postman': <SiPostman />,
   'Framer Motion': <SiFramer />,
   'Chakra UI': <SiChakraui />,
-  'Shadcn': <SiShadcnui />, // fallback to default icon if needed
+  'Shadcn': <SiShadcnui />,
 };
 
 
@@ -132,23 +132,6 @@ export default function AboutPage() {
             }
           />
 
-          <AboutSection
-            title=" Work Experience"
-            content={
-              <>
-                <div className="flex flex-wrap items-center gap-3 mb-2">
-                  <img src="/newral.webp" alt="Newral Logo" className="h-10 w-auto" />
-                  <h3 className="text-base md:text-lg font-semibold">Intern at Newral (May – July 2025):</h3>
-                </div>
-                <ul className="list-disc pl-6 space-y-1 text-sm sm:text-base">
-                  <li>Worked on a real-time chat platform (AssumeChat) using Next.js + TypeScript + Nodejs</li>
-                  <li>Improved UI performance & component reusability</li>
-                  <li>Experience how production level code works</li>
-                  <li>Contributed to the development of the Feedback form, Sidebar, and Unispace page..... </li>
-                </ul>
-              </>
-            }
-          />
 
           <AboutSection
             title=" Hackathons"
