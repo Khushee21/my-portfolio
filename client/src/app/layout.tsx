@@ -35,6 +35,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Khushi's Portfolio",
   description: "Portfolio of Khushi Rathore",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -48,6 +51,7 @@ export default function RootLayout({
         <title>Khushi's Portfolio</title>
         <meta name="description" content="Portfolio of Khushi Rathore" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="/favicon.ico" />
 
         {/* ✅ Vanta Scripts via Script component */}
         <Script

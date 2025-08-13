@@ -1,16 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import { Project } from '@/components/Types/Usertype';
 import projectsData from '@/Content.json';
 import Footer from '@/components/Footer';
 import Chatbot from '@/app/Chatbot/page';
-import Tilt from 'react-parallax-tilt'; // ⬅️ add this at the top with other imports
-
+import Tilt from 'react-parallax-tilt';
 
 const techStacks = [
   "React", "Next.js", "Java", "C", "TypeScript", "Node.js",
@@ -21,38 +19,27 @@ const techStacks = [
 const typedProjectsData = projectsData as unknown as { projectsData: Project[] };
 const projectList: Project[] = typedProjectsData.projectsData;
 
+// Helper to always return a valid src
+const getValidImageSrc = (img: string | string[] | undefined, currentIndex: number) => {
+  if (!img) return '/fallback.jpg';
+  if (Array.isArray(img)) {
+    const valid = img.filter((i) => i && i.trim() !== '');
+    return valid.length > 0 ? valid[currentIndex % valid.length] : '/fallback.jpg';
+  }
+  return img.trim() !== '' ? img : '/fallback.jpg';
+};
+
 const Projects = () => {
-  const [selected, setSelected] = useState<null | number>(null);
   const [filterType, setFilterType] = useState<'website' | 'app'>('website');
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // Rotate images for all cards every 3 seconds
   useEffect(() => {
-    if (selectedProject) {
-      setCurrentImageIndex(0);
-      const interval = setInterval(() => {
-        if (Array.isArray(selectedProject.image)) {
-          setCurrentImageIndex((prev) => (prev + 1) % selectedProject.image.length);
-        }
-      }, 3000);
-      return () => clearInterval(interval);
-    }
-  }, [selectedProject]);
-
-
-
-  useEffect(() => {
-    if (selected !== null) {
-      setCurrentImageIndex(0);
-      const interval = setInterval(() => {
-        const images = projectList[selected].image;
-        if (Array.isArray(images)) {
-          setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-        }
-      }, 3000);
-      return () => clearInterval(interval);
-    }
-  }, [selected]);
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => prev + 1);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const filteredProjects = projectList.filter((project) => project.type === filterType);
 
@@ -89,6 +76,31 @@ const Projects = () => {
 
       <div className="absolute top-0 right-0 blob w-[60vw] h-[100vh] rounded-full opacity-30 blur-3xl z-0 pointer-events-none" />
 
+      {/* Filter buttons */}
+      <div className="flex justify-center mb-10 relative z-10">
+        <div className="bg-[#1a1a1a] rounded-full p-1 flex gap-2 shadow-lg border border-orange-500/30">
+          <button
+            onClick={() => setFilterType('app')}
+            className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${filterType === 'app'
+              ? 'bg-gradient-to-r from-orange-300 text-white shadow-lg scale-105'
+              : 'text-orange-300 hover:bg-orange-500/10'
+              }`}
+          >
+            App
+          </button>
+          <button
+            onClick={() => setFilterType('website')}
+            className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${filterType === 'website'
+              ? 'bg-gradient-to-r to-orange-300 text-white shadow-lg scale-105'
+              : 'text-orange-300 hover:bg-orange-500/10'
+              }`}
+          >
+            Website
+          </button>
+        </div>
+      </div>
+
+      {/* Project grid */}
       <motion.div
         className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10"
         initial="hidden"
@@ -96,9 +108,7 @@ const Projects = () => {
         viewport={{ once: true, amount: 0.1 }}
         variants={{
           hidden: {},
-          show: {
-            transition: { staggerChildren: 0.15 },
-          },
+          show: { transition: { staggerChildren: 0.15 } },
         }}
       >
         {filteredProjects.map((project, index) => (
@@ -106,123 +116,72 @@ const Projects = () => {
             key={index}
             variants={{
               hidden: { opacity: 0, y: 40 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+              show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
             }}
           >
-            <Tilt glareEnable={true} glareMaxOpacity={0.3} glareColor="#ff8800" glarePosition="all" tiltMaxAngleX={10} tiltMaxAngleY={10}>
+            <Tilt glareEnable glareMaxOpacity={0.3} glarePosition="all" tiltMaxAngleX={10} tiltMaxAngleY={10}>
               <div
-                onClick={() => setSelectedProject(project)}
-                className="cursor-pointer bg-[#1a1a1a] rounded-xl overflow-hidden shadow-md hover:shadow-pink-500/40 transition-all"
+                className={`rounded-xl overflow-hidden shadow-md hover:shadow-orange-500/40 transition-all flex flex-col 
+    ${filterType === 'app' ? 'w-[260px] mx-auto sm:h-auto' : 'w-full sm:h-auto'}`}
               >
+                {/* Project image */}
                 <Image
-                  src={Array.isArray(project.image) ? project.image[0] : project.image}
-                  alt={project.title}
-                  width={400}
-                  height={800}
-                  className="object-cover w-full h-72 transition-transform duration-300"
+                  src={getValidImageSrc(project.image, currentImageIndex)}
+                  alt={`${project.title} image`}
+                  width={800}
+                  height={450}
+                  className={`mx-auto rounded-t-xl transition-transform duration-300 
+      ${filterType === 'app'
+                      ? 'w-[200px] h-[300px] sm:h-[400px] object-contain bg-black p-2 rounded-xl'
+                      : 'w-full h-48 sm:h-72 object-cover'}`}
                 />
-                <div className="p-4">
-                  <h3 className="text-xl font-bold text-orange-300 mb-2">{project.title}</h3>
-                  <p className="text-sm text-gray-300 line-clamp-3">{project.description}</p>
+
+                {/* Project content */}
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="text-2xl font-bold text-orange-300 mb-4 line-clamp-1">{project.title}</h3>
+                  <p className="text-sm text-gray-300 mb-4 leading-relaxed line-clamp-3">{project.description}</p>
+
+                  {/* Tech stack */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.stack.slice(0, 4).map((tech: string, idx: number) => (
+                      <span
+                        key={idx}
+                        className="bg-orange-500/10 text-orange-300 px-4 py-1 text-sm rounded-full font-medium border border-orange-400/30"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                    {project.stack.length > 4 && (
+                      <span className="text-gray-400 text-sm">+{project.stack.length - 4} more</span>
+                    )}
+                  </div>
+
+                  {/* Action buttons */}
+                  <div className="mt-auto flex flex-wrap gap-4">
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-gradient-to-r from-orange-300 hover:to-orange-500 text-white px-4 py-2 rounded-full text-sm transition"
+                    >
+                      GitHub Repo
+                    </a>
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-gradient-to-r from-orange-300 hover:to-orange-500 text-white px-4 py-2 rounded-full text-sm transition"
+                    >
+                      Live Preview
+                    </a>
+                  </div>
                 </div>
               </div>
-            </Tilt>
 
+            </Tilt>
           </motion.div>
         ))}
       </motion.div>
-
-      {/* Modal */}
-      <AnimatePresence>
-        {selectedProject && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 flex items-center justify-center z-[1000] p-4 backdrop-blur-sm"
-          >
-            <motion.div
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.95 }}
-              className="bg-[#121212] rounded-2xl shadow-xl w-full max-w-3xl p-6 relative"
-            >
-              <button
-                className="absolute top-4 right-4 text-white hover:text-orange-300"
-                onClick={() => setSelectedProject(null)}
-              >
-                <X size={28} />
-              </button>
-
-              <Image
-                src={
-                  Array.isArray(selectedProject.image)
-                    ? selectedProject.image[currentImageIndex]
-                    : selectedProject.image
-                }
-                alt={`${selectedProject.title} image`}
-                width={800}
-                height={450}
-                className="rounded-xl mb-6 object-cover w-full max-h-[400px]"
-              />
-
-              <h3 className="text-3xl font-bold text-orange-300 mb-4">
-                {selectedProject.title}
-              </h3>
-              <p className="text-base text-gray-300 mb-6 leading-relaxed">
-                {selectedProject.description}
-              </p>
-
-              <div className="flex flex-wrap gap-2 mb-6">
-                {selectedProject.stack.map((tech: string, idx: number) => (
-                  <span
-                    key={idx}
-                    className="bg-orange-500/10 text-orange-300 px-4 py-1 text-sm rounded-full font-medium border border-orange-400/30"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex flex-wrap gap-4">
-                <a
-                  href={selectedProject.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2 rounded-full text-sm transition"
-                >
-                  GitHub Repo
-                </a>
-                <a
-                  href={selectedProject.live}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm transition"
-                >
-                  Live Preview
-                </a>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-
-      {/* Filter Buttons – Only App and Website */}
-      <div className="fixed top-1/2 left-4 z-50 flex flex-col gap-4 transform -translate-y-1/2">
-        <button
-          onClick={() => setFilterType('app')}
-          className={`bg-orange-400 hover:bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg shadow-lg transition-all hover:scale-105 ${filterType === 'app' ? 'bg-orange-500' : ''}`}
-        >
-          App
-        </button>
-        <button
-          onClick={() => setFilterType('website')}
-          className={`bg-orange-400 hover:bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg shadow-lg transition-all hover:scale-105 ${filterType === 'website' ? 'bg-orange-500' : ''}`}
-        >
-          Website
-        </button>
-      </div>
 
       <Footer />
     </motion.div>

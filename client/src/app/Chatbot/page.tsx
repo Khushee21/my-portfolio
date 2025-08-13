@@ -68,7 +68,7 @@ const Chatbot = () => {
       botReply = 'Redirecting you to learn more about her skills!';
       router.push('/about');
     } else if (lowerInput.includes('you') || lowerInput.includes('your')) {
-      botReply = "I am Khushi's assistant. What is your name?";
+      botReply = "I am Khushi's Virtual assistant.";
     } else if (
       lowerInput.includes('kab btayega') ||
       lowerInput.includes('kab')

@@ -15,19 +15,34 @@
       "cgpa": "7.5"
     }
   ],
-  "collegeProject": [
-    {
-      "name": "FFF : Futility Food Fix",
-      "small-description": "It is a Group project of 4 members ",
-      "description": "Warden Dashboard: Wardens can generate daily meal forms, mark student attendance, send reports to parents, and contact NGOs to manage leftover food efficiently \n Student Dashboard: Students can fill out daily meal forms and provide meal ratings to help improve food quality and planning.",
-      "img": [
-        "/projects/f1.jpeg",
-        "/projects/f2.jpeg",
-        "/projects/f3.jpeg"
-      ]
-    }
-  ],
   "projectsData": [
+    {
+      "title": "Quantum Meet",
+      "type": "website",
+      "description": "QuantumMeet is an AI-powered SaaS platform where users can create agents, host meetings, and instantly access AI-generated summary , transcript , recodings , chat ",
+      "image": [
+        "/projects/q (1).png",
+        "/projects/q (2).png",
+        "/projects/q (3).png",
+        "/projects/q (4).png",
+        "/projects/q (5).png",
+        "/projects/q (6).png",
+        "/projects/q (7).png",
+        "/projects/q (8).png",
+        "/projects/q (9).png",
+        "/projects/q (10).png",
+        "/projects/q (11).png"
+      ],
+      "github": "https://github.com/Khushee21/Quantum-meet.git",
+      "live": "https://quantum-meet.vercel.app/",
+      "stack": [
+        "Nest.js",
+        "Drizzle ORM",
+        "Inngest",
+        "tRPC",
+        "PostgreSQL"
+      ]
+    },
     {
       "title": "While(1)",
       "type": "website",

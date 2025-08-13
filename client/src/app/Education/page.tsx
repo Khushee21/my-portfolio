@@ -1,7 +1,7 @@
-'use client' 
+'use client'
 import data from '@/Content.json';
 import Education from '@/components/Education';
 
 export default function Educationpage() {
-    return <Education education={data.education} project={data.collegeProject[0]} />
+    return <Education education={data.education} />
 }

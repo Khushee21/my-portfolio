@@ -26,18 +26,32 @@ body {
 }
 
 /* 🌀 Animated blob background */
+/* globals.css */
 .blob {
   background: conic-gradient(from 2.35rad,
       #d3ed10,
-      /* light green */
       #e91e63,
-      /* pink */
       #30d627,
-      /* green */
-      #ff6f00
-      /* orange */
-    );
+      #ff6f00);
+  filter: blur(80px);
+  opacity: 0.3;
+  animation: float 10s ease-in-out infinite;
 }
+
+@keyframes float {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+
+  50% {
+    transform: translate(30px, -20px) scale(1.1);
+  }
+
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
 
 /* ✨ Fancy text gradient reveal */
 .text-reveal {
