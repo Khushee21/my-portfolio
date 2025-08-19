@@ -33,27 +33,48 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Khushi's Portfolio",
-  description: "Portfolio of Khushi Rathore",
+  title: "Khushi Rathore | Full Stack Developer",
+  description: "Portfolio of Khushi Rathore - Fullstack Developer & Designer",
   icons: {
     icon: "/favicon.ico",
+  },
+  openGraph: {
+    title: "Khushi Rathore | Full Stack Developer",
+    description: "Portfolio of Khushi Rathore - Fullstack Developer & Designer",
+    url: "https://khushirathore.vercel.app",
+    siteName: "Khushi Rathore Portfolio",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Khushi Rathore Portfolio",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Khushi Rathore | Full Stack Developer",
+    description: "Portfolio of Khushi Rathore - Fullstack Developer & Designer",
+    images: ["/og-image.png"],
+    creator: "@KhushieRathore",
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <head>
-        <title>Khushi's Portfolio</title>
-        <meta name="description" content="Portfolio of Khushi Rathore" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://khushirathore.vercel.app" />
         <link rel="icon" href="/favicon.ico" />
 
-        {/* ✅ Vanta Scripts via Script component */}
+        {/* ✅ Vanta Scripts */}
         <Script
           src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"
           strategy="beforeInteractive"
@@ -67,7 +88,7 @@ export default function RootLayout({
           strategy="beforeInteractive"
         />
 
-
+        {/* ✅ Google Analytics */}
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-HRXERE0YT3"
@@ -80,8 +101,25 @@ export default function RootLayout({
             gtag('config', 'G-HRXERE0YT3');
           `}
         </Script>
+
+        {/* ✅ JSON-LD Structured Data */}
+        <Script id="structured-data" type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Khushi Rathore",
+            "url": "https://khushirathore.vercel.app",
+            "sameAs": [
+              "https://github.com/Khushee21",
+              "https://x.com/KhushieRathore",
+              "https://www.linkedin.com/in/khushi-rathore-5363a8257/"
+            ]
+          })}
+        </Script>
       </head>
-      <body className={`${poppins.variable} ${ubuntu.variable} ${nunito.variable} ${geistSans.variable} ${geistMono.variable} font-poppins antialiased`}>
+      <body
+        className={`${poppins.variable} ${ubuntu.variable} ${nunito.variable} ${geistSans.variable} ${geistMono.variable} font-poppins antialiased`}
+      >
         {children}
       </body>
     </html>
