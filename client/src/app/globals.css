@@ -1,12 +1,10 @@
 @import "tailwindcss";
 
-/* ✅ Avoid re-importing fonts if you're already using `next/font/google` */
 :root {
   --background: #ffffff;
   --foreground: #171717;
   --font-sans: 'Poppins', sans-serif;
   --font-mono: 'Geist Mono', monospace;
-  /* You can customize this if needed */
   --opacity-color: 255, 255, 255;
   /* white as default RGB */
 }
@@ -22,11 +20,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  /* 👈 using the custom Poppins */
 }
 
-/* 🌀 Animated blob background */
-/* globals.css */
 .blob {
   background: conic-gradient(from 2.35rad,
       #d3ed10,
@@ -34,7 +29,6 @@ body {
       #30d627,
       #ff6f00);
   filter: blur(80px);
-  opacity: 0.3;
   animation: float 10s ease-in-out infinite;
 }
 
@@ -53,7 +47,6 @@ body {
 }
 
 
-/* ✨ Fancy text gradient reveal */
 .text-reveal {
   display: inline;
   background: linear-gradient(to right,
@@ -68,7 +61,6 @@ body {
   background-repeat: no-repeat;
 }
 
-/* 🎈 Bubble animation */
 .bubble {
   animation: float 6s ease-in-out infinite;
 }

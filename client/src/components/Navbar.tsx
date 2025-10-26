@@ -37,7 +37,6 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* Mobile Menu Toggle */}
         <button
           className="md:hidden text-white z-50 left-7"
           onClick={() => setIsOpen(!isOpen)}
@@ -46,20 +45,22 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden w-dvh h-lvh absolute top-[60px] justify-center  left-10 mt-4 bg-black/50 bg-opacity-30 backdrop-blur-6xl rounded-4xl pl-15 flex flex-col gap-5 transition-all duration-300 shadow-lg ">
-          {navLinks.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={() => setIsOpen(false)}
-              className={`text-2xl  font-bold transition-all duration-300  ${pathname === href ? 'text-white-500' : 'text-orange-300'
-                }`}
-            >
-              {label}
-            </Link>
-          ))}
+        <div className="md:hidden w-4/5 h-lvh absolute top-[60px] right-0 mt-4 backdrop-blur-6xl rounded-l-4xl flex flex-col gap-5 transition-all duration-300 shadow-lg overflow-hidden border-l-3 border-black">
+          <div className="absolute inset-0 bg-orange-300 opacity-80 z-0 pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col items-center justify-center h-full space-y-8">
+            {navLinks.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setIsOpen(false)}
+                className={`text-3xl font-bold transition-all duration-300 hover:scale-110 hover:text-orange-300 ${pathname === href ? 'text-white underline' : 'text-black'}`}
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
         </div>
       )}
 

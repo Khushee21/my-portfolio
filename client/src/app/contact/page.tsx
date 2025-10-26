@@ -2,7 +2,6 @@
 
 import { Mail, Github, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import Chatbot from '@/app/Chatbot/page';
@@ -24,7 +23,7 @@ const Contact = () => {
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 mt-14 text-orange-300 tracking-wide text-center">
           Get in Touch
         </h2>
-
+        <div className="absolute bottom-0 right-0 blob w-[30vw] h-[40vh] sm:w-[25vw] sm:h-[35vh] md:w-[40vw] md:h-[60vh] opacity-30 blur-xl z-0 pointer-events-none" />
         <p className="text-gray-400 text-center max-w-2xl text-lg sm:text-xl md:text-2xl px-2">
           Let’s create something mesmerizing together
         </p>
