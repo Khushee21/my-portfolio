@@ -17,7 +17,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 w-full m-4 bg-opacity-80 text-white backdrop-blur-md shadow-md z-50">
+    <nav className="fixed top-2 left-0 rounded-3xl w-[calc(100%-1rem)] mx-2 bg-opacity-80 text-white backdrop-blur-md shadow-md z-50">
       <div className="max-w-screen-lg mx-auto flex items-center justify-between px-4 md:px-8 py-3 md:rounded-full">
         <h1 onClick={() => router.push('/')} className="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-orange-300 to-pink-300 bg-clip-text text-transparent tracking-wide">
           🏠︎
@@ -46,7 +46,7 @@ const Navbar = () => {
       </div>
 
       {isOpen && (
-        <div className="md:hidden w-4/5 h-lvh absolute top-[60px] right-0 mt-4 backdrop-blur-6xl rounded-l-4xl flex flex-col gap-5 transition-all duration-300 shadow-lg overflow-hidden border-l-3 border-black">
+        <div className="md:hidden  w-4/5 h-lvh absolute top-[60px] right-0 mt-4 backdrop-blur-6xl rounded-l-4xl flex flex-col gap-5 transition-all duration-300 shadow-lg overflow-hidden border-l-3 border-black">
           <div className="absolute inset-0 bg-orange-300 opacity-80 z-0 pointer-events-none" />
 
           <div className="relative z-10 flex flex-col items-center justify-center h-full space-y-8">

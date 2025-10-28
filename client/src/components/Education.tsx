@@ -19,8 +19,6 @@ const Education = ({ education }: EducationProps) => {
       <div className="min-h-screen bg-[#0F0F0F] text-white py-12 px-4 sm:px-6 md:px-10 relative overflow-hidden">
         <Navbar />
         <Chatbot />
-
-        {/* Section Title */}
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -115,10 +113,64 @@ const Education = ({ education }: EducationProps) => {
             <FaTwitter />
           </a>
         </motion.div>
-
-        {/* Work Experience Section */}
         <div className="space-y-12 mb-16">
-          {/* Newral Experience */}
+          <AboutSection
+            title=""
+            content={
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="relative p-6 sm:p-8 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-lg shadow-xl overflow-hidden"
+              >
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <img
+                    src="/flexzistay_logo.jpg"
+                    alt="Flexzistay Logo Background"
+                    className="w-64 sm:w-96 h-auto opacity-30 blur-2xl object-contain"
+                  />
+                </div>
+
+                <div className="flex flex-col items-center text-center mb-6 relative z-10">
+                  <img
+                    src="/flexzistay_logo.jpg"
+                    alt="Flexzistay Logo"
+                    className="h-20 w-20 sm:h-28 sm:w-28 rounded-xl object-cover border border-gray-300/20 shadow-lg"
+                  />
+                  <h3 className="text-lg sm:text-xl font-semibold text-orange-300 mt-3">
+                    Software Developer Intern
+                  </h3>
+                  <p className="text-gray-300 text-sm italic">September 2025 – Present</p>
+                </div>
+
+                {/* Description List */}
+                <ul className="relative z-10 list-none space-y-3 text-gray-200">
+                  {[
+                    "Developing and maintaining full-stack web applications using Next.js, and Node.js",
+                    "Working on multiple portals client , manager , admin ",
+                    "Building responsive user interfaces with modern CSS frameworks and component libraries",
+                    "Implementing RESTful APIs and integrating third-party services including AI integration",
+                    "Collaborating with cross-functional teams to deliver high-quality software solutions",
+                    "Working on database design and management with Prisma and PostgreSQL"
+                  ].map((point, index) => (
+                    <motion.li
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-start gap-3"
+                    >
+                      <span className="flex-shrink-0 w-2 h-2 mt-2 bg-orange-300 rounded-full shadow-md"></span>
+                      <span>{point}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+
+                <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 opacity-70"></div>
+              </motion.div>
+            }
+          />
+
           <AboutSection
             title="Work Experience"
             content={
@@ -175,67 +227,6 @@ const Education = ({ education }: EducationProps) => {
 
                 {/* Decorative bottom border */}
                 <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-orange-400 via-pink-400 to-yellow-400 opacity-70"></div>
-              </motion.div>
-            }
-          />
-
-          {/* Flexzistay Experience - NEW */}
-          <AboutSection
-            title=""
-            content={
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="relative p-6 sm:p-8 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-lg shadow-xl overflow-hidden"
-              >
-                {/* Large blurred background image */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <img
-                    src="/flexzistay_logo.jpg"
-                    alt="Flexzistay Logo Background"
-                    className="w-64 sm:w-96 h-auto opacity-30 blur-2xl object-contain"
-                  />
-                </div>
-
-                {/* Centered top logo */}
-                <div className="flex flex-col items-center text-center mb-6 relative z-10">
-                  <img
-                    src="/flexzistay_logo.jpg"
-                    alt="Flexzistay Logo"
-                    className="h-20 w-20 sm:h-28 sm:w-28 rounded-xl object-cover border border-gray-300/20 shadow-lg"
-                  />
-                  <h3 className="text-lg sm:text-xl font-semibold text-orange-300 mt-3">
-                    Software Developer Intern
-                  </h3>
-                  <p className="text-gray-300 text-sm italic">September 2025 – Present</p>
-                </div>
-
-                {/* Description List */}
-                <ul className="relative z-10 list-none space-y-3 text-gray-200">
-                  {[
-                    "Developing and maintaining full-stack web applications using Next.js, and Node.js",
-                    "Working on multiple portals client , manager , admin ",
-                    "Building responsive user interfaces with modern CSS frameworks and component libraries",
-                    "Implementing RESTful APIs and integrating third-party services including AI integration",
-                    "Collaborating with cross-functional teams to deliver high-quality software solutions",
-                    "Working on database design and management with Prisma and PostgreSQL"
-                  ].map((point, index) => (
-                    <motion.li
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex items-start gap-3"
-                    >
-                      <span className="flex-shrink-0 w-2 h-2 mt-2 bg-orange-300 rounded-full shadow-md"></span>
-                      <span>{point}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-
-                {/* Decorative bottom border */}
-                <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 opacity-70"></div>
               </motion.div>
             }
           />

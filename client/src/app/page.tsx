@@ -59,7 +59,7 @@ export default function Home() {
       >
         <div className="absolute top-0 left-0 w-full h-full z-10 flex flex-col items-center justify-center text-white text-center px-4 gap-4 sm:gap-6">
           <div className="absolute bottom-0 right-0 blob w-[30vw] h-[40vh] sm:w-[25vw] sm:h-[35vh] md:w-[40vw] md:h-[60vh] opacity-30 blur-xl z-0 pointer-events-none" />
-          <div className="absolute top-0 left-0 blob w-[30vw] h-[40vh] sm:w-[25vw] sm:h-[35vh] md:w-[20vw] md:h-[30vh] opacity-70 blur-xl z-0 pointer-events-none" />
+          <div className="absolute top-0 left-0 blob w-[30vw] h-[40vh] sm:w-[25vw] sm:h-[35vh] md:w-[20vw] md:h-[30vh] opacity-50 blur-xl z-0 pointer-events-none" />
           <motion.img
             src="/profile.jpeg"
             alt="Khushi Rathore - Full Stack Developer"

@@ -143,7 +143,7 @@ const Projects = () => {
 
                   {/* Tech stack */}
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {project.stack.slice(0, 4).map((tech: string, idx: number) => (
+                    {project.stack.slice(0, 8).map((tech: string, idx: number) => (
                       <span
                         key={idx}
                         className="bg-orange-500/10 text-orange-300 px-4 py-1 text-sm rounded-full font-medium border border-orange-400/30"
@@ -151,9 +151,6 @@ const Projects = () => {
                         {tech}
                       </span>
                     ))}
-                    {project.stack.length > 4 && (
-                      <span className="text-gray-400 text-sm">+{project.stack.length - 4} more</span>
-                    )}
                   </div>
 
                   {/* Action buttons */}

@@ -4,15 +4,24 @@ import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Bot, Send } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { GoogleGenAI } from '@google/genai';
+
+interface Message {
+  from: string;
+  text: string;
+}
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([
-    { from: 'bot', text: 'Hi! I am Khushi’s assistant. Ask me anything 🔍' },
+  const [messages, setMessages] = useState<Message[]>([
+    { from: 'bot', text: 'Hi! I am Khushi\'s assistant. Ask me anything about her projects, skills, or experience! 🔍' },
   ]);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY || '' });
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -20,73 +29,84 @@ const Chatbot = () => {
     }
   }, [messages]);
 
-  const handleUserInput = () => {
+  const khushiContext = `
+You are Khushi's virtual assistant. Keep responses SHORT, FRIENDLY, and CONCISE (2-3 sentences max). Use emojis occasionally.
+
+**About Khushi:**
+- MCA student at Banasthali University (9.5 CGPA)
+- SDE Intern at Newral and Flexzistay
+- 6 months of professional experience
+- Passionate about software development 
+- Hardworking, detail-oriented, great team player, coder
+- DevOps Enthusiast and AI & Cloud Computing Explorer
+- Focused on career growth and becoming an SDE
+
+**SPECIFIC RESPONSES:**
+- For personal questions (marriage, relationship, boyfriend, love, age, personal life): 
+  "Khushi is focused on her career growth and becoming an awesome Software Development Engineer! 💻🚀"
+
+- For projects: "Check out her amazing projects! 🚀" + redirect to /Projects
+- For contact: "Let's connect! 📧" + redirect to /contact  
+- For skills: "See her tech skills! 💻" + redirect to /about
+- For education: "Pursuing MCA at Banasthali with 9.5 CGPA 🎓"
+- For work: "SDE Intern at Newral with 6 months experience 👩💻"
+- For qualities: "Hardworking, detail-oriented team player! ✨"
+
+**Response Rules:**
+- Be brief and to the point
+- Use casual, friendly language
+- Include relevant emojis
+- For personal questions, use the career-focused response
+- Redirect immediately for projects/contact/skills
+- If unsure about professional topics: "I can help with Khushi's projects, skills, or experience! 😊"
+`;
+
+  const handleUserInput = async () => {
     if (!input.trim()) return;
 
-    const userMessage = { from: 'user', text: input };
-    const lowerInput = input.toLowerCase();
-    let botReply = '';
-
-    if (lowerInput.includes('project')) {
-      botReply = 'Khushi has built amazing projects! Redirecting you to Projects...';
-      router.push('/Projects');
-    } else if (lowerInput.includes('hey') || lowerInput.includes('hello')) {
-      botReply = 'Yes! Ask me anything about Khushi ✨';
-    } else if (
-      lowerInput.includes('contact') ||
-      lowerInput.includes('connect') ||
-      lowerInput.includes('talk')
-    ) {
-      botReply = 'Taking you to the Contact page. Let’s connect!';
-      router.push('/contact');
-    } else if (lowerInput.includes('education')) {
-      botReply = 'Khushi is pursuing MCA from Banasthali with 9.5 CGPA.';
-    } else if (lowerInput.includes('service') || lowerInput.includes('work')) {
-      botReply = 'She works as an SDE Intern at Newral.';
-    } else if (
-      lowerInput.includes('boyfriend') ||
-      lowerInput.includes('relationship') ||
-      lowerInput.includes('love')
-    ) {
-      botReply = 'Khushi has only one aim – to become an awesome SDE! 💻🚀';
-    } else if (
-      lowerInput.includes('quality') ||
-      lowerInput.includes('qualities') ||
-      lowerInput.includes('special') ||
-      lowerInput.includes('hire') ||
-      lowerInput.includes('she') ||
-      lowerInput.includes('her') ||
-      lowerInput.includes('khushi')
-    ) {
-      botReply =
-        'She is hardworking, consistent, detail-oriented, and a great team player. Collaborate with her — she’s amazing! ✨';
-    } else if (
-      lowerInput.includes('tech stack') ||
-      lowerInput.includes('learning') ||
-      lowerInput.includes('languages')
-    ) {
-      botReply = 'Redirecting you to learn more about her skills!';
-      router.push('/about');
-    } else if (lowerInput.includes('you') || lowerInput.includes('your')) {
-      botReply = "I am Khushi's Virtual assistant.";
-    } else if (
-      lowerInput.includes('kab btayega') ||
-      lowerInput.includes('kab')
-    ) {
-      botReply = 'Kal bataunga 😅';
-    } else if (
-      lowerInput.includes('okay') ||
-      lowerInput.includes('acha') ||
-      lowerInput.includes('haan') ||
-      lowerInput.includes('thik h')
-    ) {
-      botReply = 'Hmmmm...';
-    } else {
-      botReply = 'I’m not sure I understand. Can you explain it a bit more? 😅';
-    }
-
-    setMessages((prev) => [...prev, userMessage, { from: 'bot', text: botReply }]);
+    const userMessage: Message = { from: 'user', text: input };
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
+    setIsLoading(true);
+
+    try {
+      const prompt = `${khushiContext}
+
+Current conversation: ${messages.slice(-3).map(m => `${m.from}: ${m.text}`).join('\n')}
+
+User: ${input}
+
+Assistant (SHORT response, 2-3 sentences max):`;
+
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.0-flash-exp',
+        contents: prompt,
+      });
+
+      const botReply = response.text?.trim() || 'Let me check that for you! ';
+
+      const lowerInput = input.toLowerCase();
+      if (lowerInput.includes('project')) {
+        setTimeout(() => router.push('/Projects'), 1500);
+      } else if (lowerInput.includes('contact') || lowerInput.includes('connect') || lowerInput.includes('email')) {
+        setTimeout(() => router.push('/contact'), 1500);
+      } else if (lowerInput.includes('skill') || lowerInput.includes('tech') || lowerInput.includes('about') || lowerInput.includes('learn')) {
+        setTimeout(() => router.push('/about'), 1500);
+      }
+
+      const botMessage: Message = { from: 'bot', text: botReply };
+      setMessages(prev => [...prev, botMessage]);
+    } catch (error) {
+      console.error('Error calling Gemini API:', error);
+
+      const errorMessage: Message = {
+        from: 'bot',
+        text: 'Let me check that for you! '
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -100,7 +120,6 @@ const Chatbot = () => {
         {isOpen ? 'Close' : "I'm here!"}
       </button>
 
-      {/* Chat Box */}
       {isOpen && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -125,21 +144,29 @@ const Chatbot = () => {
                 </span>
               </div>
             ))}
+            {isLoading && (
+              <div className="text-left">
+                <span className="inline-block px-3 py-2 rounded-lg bg-gray-200 text-gray-800">
+                  Thinking...
+                </span>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Box */}
           <div className="flex items-center gap-2">
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleUserInput()}
-              placeholder="Type your question..."
+              onKeyDown={(e) => e.key === 'Enter' && !isLoading && handleUserInput()}
+              placeholder="Ask about Khushi..."
               className="flex-1 px-3 py-2 rounded-full border border-gray-300 focus:outline-none"
+              disabled={isLoading}
             />
             <button
               onClick={handleUserInput}
-              className="text-orange-500 hover:text-orange-700 transition"
+              disabled={isLoading}
+              className="text-orange-500 hover:text-orange-700 transition disabled:opacity-50"
             >
               <Send size={18} />
             </button>
