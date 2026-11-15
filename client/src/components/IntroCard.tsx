@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Renderer, Camera, Transform, Plane, Program, Mesh, Texture } from 'ogl'
 import { intro } from '@/data/site'
 import { drawBack, drawFront, fontsFromCss, loadImage } from './postcard'
@@ -74,14 +74,27 @@ export default function IntroCard() {
   const host = useRef<HTMLDivElement>(null)
   const shadow = useRef<HTMLDivElement>(null)
   const hint = useRef<HTMLDivElement>(null)
+  const fallback = useRef<HTMLDivElement>(null)
+  // bumped when the phone drops the WebGL context, to rebuild everything
+  const [gen, setGen] = useState(0)
 
   useEffect(() => {
     const el = host.current!
+    // The plain photo card shows until WebGL has proven it draws the real card.
+    const showFallback = (on: boolean) => {
+      if (fallback.current) fallback.current.style.opacity = on ? '1' : '0'
+      gl.canvas.style.opacity = on ? '0' : '1'
+    }
     const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 2), alpha: true, premultipliedAlpha: false })
     const gl = renderer.gl
     gl.clearColor(0, 0, 0, 0)
     el.appendChild(gl.canvas)
-    gl.canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%'
+    gl.canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .4s'
+    // Mobile browsers can drop WebGL to save memory; rebuild when it comes back.
+    const onLost = (e: Event) => { e.preventDefault(); showFallback(true) }
+    const onRestored = () => setGen(g => g + 1)
+    gl.canvas.addEventListener('webglcontextlost', onLost)
+    gl.canvas.addEventListener('webglcontextrestored', onRestored)
 
     const camera = new Camera(gl)
     camera.position.z = 2000
@@ -106,24 +119,41 @@ export default function IntroCard() {
 
     let portrait: boolean | null = null
     let alive = true
+    let ready = false      // both faces uploaded
+    let verified = false   // WebGL really drew the photo (not a black quad)
+    let checks = 0
     const fonts = fontsFromCss()
 
     // (Re)draw both faces whenever the card switches between landscape and portrait.
     const buildTextures = async (isPortrait: boolean) => {
       const [W, H] = isPortrait ? [1200, 1800] : [1800, 1200]
-      await Promise.all([
-        document.fonts.load(`600 40px ${fonts.hand}`),
-        document.fonts.load(`700 40px ${fonts.sans}`),
-        document.fonts.load(`400 40px ${fonts.sans}`),
-        document.fonts.load(`700 40px ${fonts.mono}`),
-      ])
-      const [photo, stamp] = await Promise.all([
-        loadImage(isPortrait ? intro.front.portrait : intro.front.landscape),
-        loadImage(intro.stamp),
-      ])
-      if (!alive) return
-      tFront.image = drawFront(W, H, photo, fonts)
-      tBack.image = drawBack(W, H, stamp, fonts)
+      ready = false
+      try {
+        // don't wait forever for web fonts on a slow mobile connection
+        await Promise.race([
+          Promise.all([
+            document.fonts.load(`600 40px ${fonts.hand}`),
+            document.fonts.load(`700 40px ${fonts.sans}`),
+            document.fonts.load(`400 40px ${fonts.sans}`),
+            document.fonts.load(`700 40px ${fonts.mono}`),
+          ]),
+          new Promise(r => setTimeout(r, 2500)),
+        ])
+        const [photo, stamp] = await Promise.all([
+          loadImage(isPortrait ? intro.front.portrait : intro.front.landscape),
+          loadImage(intro.stamp),
+        ])
+        if (!alive) return
+        tFront.image = drawFront(W, H, photo, fonts)
+        tBack.image = drawBack(W, H, stamp, fonts)
+        tFront.needsUpdate = true
+        tBack.needsUpdate = true
+        ready = true
+        verified = false
+        checks = 0
+      } catch {
+        showFallback(true) // keep the plain photo card
+      }
     }
 
     let cardW = 1, cardH = 1
@@ -141,9 +171,10 @@ export default function IntroCard() {
       }
       program.uniforms.uSize.value = [cardW, cardH]
       program.uniforms.uR.value = Math.min(cardW, cardH) * 0.11
-      if (shadow.current) {
-        shadow.current.style.width = `${cardW}px`
-        shadow.current.style.height = `${cardH}px`
+      for (const box of [shadow.current, fallback.current]) {
+        if (!box) continue
+        box.style.width = `${cardW}px`
+        box.style.height = `${cardH}px`
       }
       if (isPortrait !== portrait) {
         portrait = isPortrait
@@ -184,7 +215,16 @@ export default function IntroCard() {
         shadow.current.style.opacity = String(1 - lift * 0.6)
       }
       if (hint.current) hint.current.style.opacity = String(1 - Math.min(1, p * 6))
-      renderer.render({ scene, camera })
+      if (ready) {
+        renderer.render({ scene, camera })
+        // Check once that the card's centre isn't black; some phone GPUs fail silently.
+        if (!verified && checks < 90) {
+          checks++
+          const px = new Uint8Array(4)
+          gl.readPixels(gl.drawingBufferWidth >> 1, gl.drawingBufferHeight >> 1, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px)
+          if (px[0] + px[1] + px[2] > 30) { verified = true; showFallback(false) }
+        }
+      }
       raf = requestAnimationFrame(loop)
     }
     raf = requestAnimationFrame(loop)
@@ -196,10 +236,12 @@ export default function IntroCard() {
       st.kill()
       drift.scrollTrigger?.kill()
       drift.kill()
+      gl.canvas.removeEventListener('webglcontextlost', onLost)
+      gl.canvas.removeEventListener('webglcontextrestored', onRestored)
       gl.getExtension('WEBGL_lose_context')?.loseContext()
       gl.canvas.remove()
     }
-  }, [])
+  }, [gen])
 
   return (
     <section id="about" ref={section} className="relative" style={{ height: '260svh' }}>
@@ -219,6 +261,18 @@ export default function IntroCard() {
         <InstantCamera />
 
         <div ref={shadow} className="pointer-events-none absolute top-1/2 left-1/2" style={{ transform: 'translate(-50%,-50%)' }} />
+
+        {/* Plain photo card: shown until (or instead of, if WebGL fails) the curling WebGL card */}
+        <div ref={fallback} className="pointer-events-none absolute top-1/2 left-1/2 transition-opacity duration-500"
+          style={{ transform: 'translate(-50%,-50%) rotate(-4deg)', background: '#fbf6e9', padding: '4.5%', boxShadow: '0 18px 40px rgba(13,18,48,.35)' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={intro.front.portrait} alt="Khushi Rathore" className="h-full w-full object-cover" style={{ objectPosition: '50% 35%' }} />
+          <p className="hand absolute top-[58%] left-[10%] -rotate-6 leading-[0.86] text-sun"
+            style={{ fontSize: 'clamp(2.4rem, 9vw, 4.5rem)', textShadow: '0 2px 0 rgba(13,18,48,.55), 0 0 8px rgba(13,18,48,.35)' }}>
+            {intro.note.map(t => <span key={t} className="block">{t}</span>)}
+          </p>
+        </div>
+
         <div ref={host} className="absolute inset-0" />
 
         <div ref={hint} className="mono pointer-events-none absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-cream px-4 py-2 text-[10px] text-ink shadow-md">
