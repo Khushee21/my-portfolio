@@ -1,71 +1,27 @@
-'use client';
+'use client'
 
-import Link from "next/link";
-import { usePathname, useRouter } from 'next/navigation';
-import { useState } from "react";
-import { Menu, X } from 'lucide-react';
+import { site } from '@/data/site'
+import { scrollTo } from './scroll'
 
-const Navbar = () => {
-  const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
-  const navLinks = [
-    { href: '/about', label: 'About' },
-    { href: '/Education', label: 'Education' },
-    { href: '/Projects', label: 'My Work' },
-    { href: '/contact', label: 'Connect' },
-  ];
+export default function Navbar() {
+  // Every section is busy (picnic cloth, cards, yellow footer), so each group sits on a dark glass pill.
+  const pill = 'flex items-center rounded-full bg-ink/75 px-3 py-2 backdrop-blur-md'
+  const link = 'mono text-[11px] text-sun transition-opacity hover:opacity-70'
 
   return (
-    <nav className="fixed top-2 left-0 rounded-3xl w-[calc(100%-1rem)] mx-2 bg-opacity-80 text-white backdrop-blur-md shadow-md z-50">
-      <div className="max-w-screen-lg mx-auto flex items-center justify-between px-4 md:px-8 py-3 md:rounded-full">
-        <h1 onClick={() => router.push('/')} className="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-orange-300 to-pink-300 bg-clip-text text-transparent tracking-wide">
-          🏠︎
-        </h1>
-
-        <ul className="hidden md:flex gap-6 md:gap-8 items-center text-base font-medium">
-          {navLinks.map(({ href, label }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                className={`transition-all duration-300 hover:text-orange-300 ${pathname === href ? 'text-orange-300' : 'text-white'
-                  }`}
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <button
-          className="md:hidden text-white z-50 left-7"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X size={26} /> : <Menu size={26} />}
-        </button>
+    <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-5 py-5 md:px-12 md:py-7">
+      <div className={`${pill} gap-4`}>
+        <button onClick={() => scrollTo(0)} className="mono whitespace-nowrap text-[11px] text-sun">{site.short} ©{new Date().getFullYear()}</button>
       </div>
-
-      {isOpen && (
-        <div className="md:hidden  w-4/5 h-lvh absolute top-[60px] right-0 mt-4 backdrop-blur-6xl rounded-l-4xl flex flex-col gap-5 transition-all duration-300 shadow-lg overflow-hidden border-l-3 border-black">
-          <div className="absolute inset-0 bg-orange-300 opacity-80 z-0 pointer-events-none" />
-
-          <div className="relative z-10 flex flex-col items-center justify-center h-full space-y-8">
-            {navLinks.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setIsOpen(false)}
-                className={`text-3xl font-bold transition-all duration-300 hover:scale-110 hover:text-orange-300 ${pathname === href ? 'text-white underline' : 'text-black'}`}
-              >
-                {label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-
-    </nav>
-  );
-};
-
-export default Navbar;
+      <nav className={`${pill} gap-5 md:gap-8`}>
+        <button onClick={() => scrollTo(0)} className={`${link} hidden sm:block`}>Home</button>
+        <button onClick={() => scrollTo('#work')} className={link}>Work</button>
+        <a href={site.links.bookCall} target="_blank" rel="noreferrer" className={`${link} hidden sm:block`}>Book a call ↗</a>
+        <button onClick={() => scrollTo('#contact')}
+          className="mono whitespace-nowrap rounded-full bg-sun px-4 py-2.5 text-[11px] text-cobalt transition-transform hover:scale-105">
+          Let&apos;s talk
+        </button>
+      </nav>
+    </header>
+  )
+}

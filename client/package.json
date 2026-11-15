@@ -1,39 +1,26 @@
 {
-  "name": "client",
+  "name": "khushi-portfolio-v2",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
-    "@google/genai": "^1.27.0",
-    "@google/generative-ai": "^0.24.1",
-    "@gsap/react": "^2.1.2",
-    "@tailwindcss/cli": "^4.1.10",
-    "framer-motion": "^12.17.0",
-    "gsap": "^3.13.0",
-    "lottie-react": "^2.4.1",
-    "lucide-react": "^0.515.0",
+    "gsap": "3.13.0",
+    "lenis": "1.3.4",
     "next": "15.3.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-icons": "^5.5.0",
-    "react-parallax-tilt": "^1.7.304",
-    "react-simple-typewriter": "^5.0.1",
-    "three": "^0.177.0"
+    "ogl": "1.0.11",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.10",
-    "@types/node": "^20",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
-    "@types/react-icons": "^2.2.7",
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.10",
-    "typescript": "^5"
+    "@tailwindcss/postcss": "4.1.10",
+    "@types/node": "20.19.0",
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.6",
+    "tailwindcss": "4.1.10",
+    "typescript": "5.8.3"
   }
 }
