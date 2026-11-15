@@ -80,6 +80,7 @@ export default function IntroCard() {
   const debug = useRef<HTMLPreElement>(null)     // shown with ?debug=1
   // bumped when the phone drops the WebGL context, to rebuild everything
   const [gen, setGen] = useState(0)
+  const [isTall, setIsTall] = useState(true)
 
   useEffect(() => {
     const el = host.current!
@@ -141,7 +142,8 @@ export default function IntroCard() {
 
     // (Re)draw both faces whenever the card switches between landscape and portrait.
     const buildTextures = async (isPortrait: boolean) => {
-      const [W, H] = isPortrait ? [1200, 1800] : [1800, 1200]
+      // phones get ~2.5x less canvas memory; layout is relative so it still looks the same
+      const [W, H] = isPortrait ? [760, 1140] : [1800, 1200]
       ready = false
       try {
         // don't wait forever for web fonts on a slow mobile connection
@@ -159,13 +161,15 @@ export default function IntroCard() {
           loadImage(intro.stamp),
         ])
         if (!alive) return
-        tFront.image = drawFront(W, H, photo, fonts)
+        const frontCanvas = drawFront(W, H, photo, fonts)
         const backCanvas = drawBack(W, H, stamp, fonts)
-        tBack.image = backCanvas
-        if (backFace.current) {
-          backFace.current.replaceChildren(backCanvas)
-          backCanvas.style.cssText = 'width:100%;height:100%;display:block'
+        // A canvas the phone couldn't allocate paints nothing: its corner is transparent instead of paper.
+        const painted = (c: HTMLCanvasElement) => {
+          try { return c.getContext('2d')!.getImageData(4, 4, 1, 1).data[3] > 0 } catch { return false }
         }
+        if (!painted(frontCanvas) || !painted(backCanvas)) throw new Error('canvas came out blank on this device')
+        tFront.image = frontCanvas
+        tBack.image = backCanvas
         tFront.needsUpdate = true
         tBack.needsUpdate = true
         ready = true
@@ -197,8 +201,10 @@ export default function IntroCard() {
         box.style.width = `${cardW}px`
         box.style.height = `${cardH}px`
       }
+      fallback.current?.style.setProperty('--u', `${Math.min(cardW, cardH)}px`)
       if (isPortrait !== portrait) {
         portrait = isPortrait
+        setIsTall(isPortrait)
         buildTextures(isPortrait)
       }
     }
@@ -310,7 +316,9 @@ export default function IntroCard() {
             </div>
             {/* back: the postcard (filled with the same drawing the WebGL card uses) */}
             <div ref={backFace} className="absolute inset-0 overflow-hidden"
-              style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)', background: '#fbf6e9', boxShadow: '0 18px 40px rgba(13,18,48,.35)' }} />
+              style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)', background: '#fbf6e9', boxShadow: '0 18px 40px rgba(13,18,48,.35)' }}>
+              <PostcardBack tall={isTall} />
+            </div>
           </div>
         </div>
 
@@ -322,6 +330,66 @@ export default function IntroCard() {
         </div>
       </div>
     </section>
+  )
+}
+
+// Postcard back as plain HTML — what phones see when WebGL/canvas painting isn't available.
+function PostcardBack({ tall }: { tall: boolean }) {
+  const u = (k: number) => `calc(var(--u) * ${k})`
+  const airmail = 'repeating-linear-gradient(-45deg,#2440c8 0 7px,#fbf6e9 7px 10px,#ffd23f 10px 17px,#fbf6e9 17px 20px)'
+  const left = (
+    <div className="min-w-0">
+      <p className="font-semibold" style={{ fontSize: u(0.05) }}>{intro.greeting}</p>
+      <p className="mt-[0.6em] leading-[1.5] text-ink/85" style={{ fontSize: u(tall ? 0.037 : 0.031) }}>{intro.body}</p>
+      <div className="mt-[0.9em] flex" style={{ gap: u(0.035) }}>
+        {intro.badges.map(b => (
+          <div key={b.label} className="flex flex-col items-center" style={{ gap: u(0.012) }}>
+            <span className="mono grid place-items-center rounded-full font-bold normal-case"
+              style={{ width: u(0.1), height: u(0.1), fontSize: u(0.034), background: b.color, color: b.color === '#ffd23f' ? '#0d1230' : '#fff' }}>{b.glyph}</span>
+            <span className="mono font-bold" style={{ fontSize: u(0.018) }}>{b.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+  const right = (
+    <div className="min-w-0">
+      <div className="relative flex justify-end" style={{ height: u(0.26) }}>
+        <svg viewBox="0 0 100 100" className="absolute top-[18%] opacity-80" style={{ width: u(0.17), right: u(0.2) }} aria-hidden>
+          <circle cx="50" cy="50" r="46" fill="none" stroke="#2440c8" strokeWidth="3" />
+          <circle cx="50" cy="50" r="30" fill="none" stroke="#2440c8" strokeWidth="2" />
+          <text x="50" y="47" textAnchor="middle" fontSize="13" fontWeight="700" fill="#2440c8">{intro.postmark.date}</text>
+          <text x="50" y="63" textAnchor="middle" fontSize="11" fontWeight="700" fill="#2440c8">{intro.postmark.year}</text>
+        </svg>
+        <div className="rotate-3 bg-white p-[5%] shadow-sm" style={{ width: u(0.19) }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={intro.stamp} alt="" className="aspect-[4/5] w-full bg-cobalt object-cover" />
+        </div>
+      </div>
+      {intro.lines.map((l, i) => (
+        <p key={l} className={`border-b border-ink/20 ${i === 0 ? 'font-bold' : 'font-medium'}`}
+          style={{ fontSize: u(i === 0 ? 0.055 : 0.033), paddingTop: u(0.02), paddingBottom: u(0.008) }}>{l}</p>
+      ))}
+    </div>
+  )
+  return (
+    <div className="absolute inset-0 text-ink" style={{ padding: u(0.035), background: airmail }}>
+      <div className="flex h-full flex-col bg-[#fbf6e9]" style={{ padding: u(0.05) }}>
+        <p className="text-center font-bold" style={{ fontSize: u(0.042), letterSpacing: '0.35em' }}>POST CARD</p>
+        {tall ? (
+          <div className="mt-[4%] flex flex-1 flex-col justify-between">
+            {left}
+            <div className="border-t border-cobalt/50 pt-[3%]">{right}</div>
+          </div>
+        ) : (
+          <div className="mt-[3%] grid flex-1 grid-cols-[1.15fr_1px_0.85fr] items-start" style={{ gap: u(0.05) }}>
+            {left}
+            <div className="h-full bg-cobalt/50" />
+            {right}
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
 
