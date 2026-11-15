@@ -215,7 +215,7 @@ export const intro = {
   note: ['Psst.', 'check', 'the back'],
   greeting: "Hey, I'm Khushi",
   body:
-    'A full-stack developer who ships to production. At R2A Dynamics I build an AI-matched consultant platform and a forex trading app, run the AWS infrastructure and mentor 3 developers. Before that I cut invoice latency by 40% at Flexzistay and made a 500K-record CRM 100× faster at Veltrix360. I love event-driven systems that don’t break.',
+    'A full-stack developer who ships to production. At R2A Dynamics I build an AI-matched consultant platform and a forex trading app, run the AWS infrastructure and mentor 3 developers. I’ve cut invoice latency by 40% at Flexzistay, made a 500K-record CRM 100× faster, sped up logins by 47%, and self-deployed 6+ freelance apps end to end.',
   lines: ['Khushi Rathore', 'Full Stack Developer', 'R2A Dynamics · 2 yrs exp'],
   badges: [
     { label: 'FULL STACK', glyph: '</>', color: '#2440c8' },

@@ -75,6 +75,9 @@ export default function IntroCard() {
   const shadow = useRef<HTMLDivElement>(null)
   const hint = useRef<HTMLDivElement>(null)
   const fallback = useRef<HTMLDivElement>(null)
+  const flip = useRef<HTMLDivElement>(null)      // CSS 3D flip used when WebGL can't draw
+  const backFace = useRef<HTMLDivElement>(null)
+  const debug = useRef<HTMLPreElement>(null)     // shown with ?debug=1
   // bumped when the phone drops the WebGL context, to rebuild everything
   const [gen, setGen] = useState(0)
 
@@ -122,6 +125,18 @@ export default function IntroCard() {
     let ready = false      // both faces uploaded
     let verified = false   // WebGL really drew the photo (not a black quad)
     let checks = 0
+    let lastPx = '-'
+    let failReason = ''
+    const showDebug = typeof location !== 'undefined' && location.search.includes('debug')
+    const glInfo = (() => {
+      const ext = gl.getExtension('WEBGL_debug_renderer_info')
+      return {
+        version: typeof WebGL2RenderingContext !== 'undefined' && gl instanceof WebGL2RenderingContext ? 'webgl2' : 'webgl1',
+        gpu: ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : 'n/a',
+        maxTex: gl.getParameter(gl.MAX_TEXTURE_SIZE),
+        dpr: window.devicePixelRatio,
+      }
+    })()
     const fonts = fontsFromCss()
 
     // (Re)draw both faces whenever the card switches between landscape and portrait.
@@ -145,13 +160,19 @@ export default function IntroCard() {
         ])
         if (!alive) return
         tFront.image = drawFront(W, H, photo, fonts)
-        tBack.image = drawBack(W, H, stamp, fonts)
+        const backCanvas = drawBack(W, H, stamp, fonts)
+        tBack.image = backCanvas
+        if (backFace.current) {
+          backFace.current.replaceChildren(backCanvas)
+          backCanvas.style.cssText = 'width:100%;height:100%;display:block'
+        }
         tFront.needsUpdate = true
         tBack.needsUpdate = true
         ready = true
         verified = false
         checks = 0
-      } catch {
+      } catch (err) {
+        failReason = String(err)
         showFallback(true) // keep the plain photo card
       }
     }
@@ -215,6 +236,16 @@ export default function IntroCard() {
         shadow.current.style.opacity = String(1 - lift * 0.6)
       }
       if (hint.current) hint.current.style.opacity = String(1 - Math.min(1, p * 6))
+      // CSS flip card (visible only when WebGL isn't): turn over around the vertical axis
+      if (flip.current) {
+        flip.current.style.transform = `rotateY(${-180 * p}deg) rotateX(${lift * 10}deg) scale(${1 + lift * 0.06})`
+      }
+      if (showDebug && debug.current) {
+        debug.current.textContent =
+          `${glInfo.version} · max tex ${glInfo.maxTex} · dpr ${glInfo.dpr}\n${glInfo.gpu}\n` +
+          `textures ready: ${ready} · webgl verified: ${verified} · checks ${checks}\n` +
+          `centre pixel: ${lastPx} · lost: ${gl.isContextLost()}\n${failReason}`
+      }
       if (ready) {
         renderer.render({ scene, camera })
         // Check once that the card's centre isn't black; some phone GPUs fail silently.
@@ -222,6 +253,8 @@ export default function IntroCard() {
           checks++
           const px = new Uint8Array(4)
           gl.readPixels(gl.drawingBufferWidth >> 1, gl.drawingBufferHeight >> 1, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px)
+          lastPx = Array.from(px).join(',')
+          if (checks === 90 && !verified) failReason = failReason || 'WebGL drew black — using CSS flip'
           if (px[0] + px[1] + px[2] > 30) { verified = true; showFallback(false) }
         }
       }
@@ -264,16 +297,25 @@ export default function IntroCard() {
 
         {/* Plain photo card: shown until (or instead of, if WebGL fails) the curling WebGL card */}
         <div ref={fallback} className="pointer-events-none absolute top-1/2 left-1/2 transition-opacity duration-500"
-          style={{ transform: 'translate(-50%,-50%) rotate(-4deg)', background: '#fbf6e9', padding: '4.5%', boxShadow: '0 18px 40px rgba(13,18,48,.35)' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={intro.front.portrait} alt="Khushi Rathore" className="h-full w-full object-cover" style={{ objectPosition: '50% 35%' }} />
-          <p className="hand absolute top-[58%] left-[10%] -rotate-6 leading-[0.86] text-sun"
-            style={{ fontSize: 'clamp(2.4rem, 9vw, 4.5rem)', textShadow: '0 2px 0 rgba(13,18,48,.55), 0 0 8px rgba(13,18,48,.35)' }}>
-            {intro.note.map(t => <span key={t} className="block">{t}</span>)}
-          </p>
+          style={{ transform: 'translate(-50%,-50%) rotate(-4deg)', perspective: '1400px' }}>
+          <div ref={flip} className="relative h-full w-full" style={{ transformStyle: 'preserve-3d' }}>
+            {/* front: the photo print */}
+            <div className="absolute inset-0" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', background: '#fbf6e9', padding: '4.5%', boxShadow: '0 18px 40px rgba(13,18,48,.35)' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={intro.front.portrait} alt="Khushi Rathore" className="h-full w-full object-cover" style={{ objectPosition: '50% 35%' }} />
+              <p className="hand absolute top-[58%] left-[10%] -rotate-6 leading-[0.86] text-sun"
+                style={{ fontSize: 'clamp(2.4rem, 9vw, 4.5rem)', textShadow: '0 2px 0 rgba(13,18,48,.55), 0 0 8px rgba(13,18,48,.35)' }}>
+                {intro.note.map(t => <span key={t} className="block">{t}</span>)}
+              </p>
+            </div>
+            {/* back: the postcard (filled with the same drawing the WebGL card uses) */}
+            <div ref={backFace} className="absolute inset-0 overflow-hidden"
+              style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)', background: '#fbf6e9', boxShadow: '0 18px 40px rgba(13,18,48,.35)' }} />
+          </div>
         </div>
 
         <div ref={host} className="absolute inset-0" />
+        <pre ref={debug} className="pointer-events-none absolute top-20 left-2 z-50 max-w-[94vw] rounded bg-ink/85 p-2 text-[10px] whitespace-pre-wrap text-cream empty:hidden" />
 
         <div ref={hint} className="mono pointer-events-none absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-cream px-4 py-2 text-[10px] text-ink shadow-md">
           <span className="inline-block h-4 w-2.5 rounded-full border-2 border-ink" /> Scroll
