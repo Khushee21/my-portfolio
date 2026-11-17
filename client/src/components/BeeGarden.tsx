@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { createBeeSounds, type BeeSounds } from './beeSounds'
+import { onScreen } from './onScreen'
 
 // Footer mini-game: bees buzz around swaying sunflowers. "+ Bee" sends out
 // another bee; the racket turns the mouse into an electric mosquito racket —
@@ -256,7 +257,10 @@ export default function BeeGarden() {
 
     let raf = 0
     let last = performance.now()
+    const vis = onScreen(cv)
     const loop = (now: number) => {
+      raf = requestAnimationFrame(loop)
+      if (!vis.on) { last = now; return }
       const dt = Math.min(0.05, (now - last) / 1000) * (reduce ? 0.35 : 1)
       last = now
       t += dt
@@ -322,12 +326,12 @@ export default function BeeGarden() {
         mouse.swing = Math.max(0, mouse.swing - dt * 5)
         drawRacket()
       }
-      raf = requestAnimationFrame(loop)
     }
     raf = requestAnimationFrame(loop)
 
     return () => {
       cancelAnimationFrame(raf)
+      vis.stop()
       ro.disconnect()
       cv.removeEventListener('pointermove', onMove)
       cv.removeEventListener('pointerleave', onLeave)

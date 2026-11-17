@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react'
 import { Renderer, Camera, Transform, Plane, Program, Mesh, Texture } from 'ogl'
+import { inFlight, workCardSize } from './flight'
+import { onScreen } from './onScreen'
 
 // Vertical stack of project screenshots on bent cards. `progress` (0 … n-1)
 // says which card is centred; scroll speed bends the cards harder and pulls
@@ -33,6 +35,7 @@ const fragment = /* glsl */ `
   uniform vec2 uImage;     // px
   uniform float uSplit;
   uniform float uOffset;
+  uniform float uAlpha;
   varying vec2 vUv;
 
   vec2 cover(vec2 uv) {
@@ -58,7 +61,7 @@ const fragment = /* glsl */ `
     );
     col *= 1. - 0.45 * min(abs(uOffset), 1.);      // dim cards that aren't centred
     float a = 1. - smoothstep(-1., 1., rounded(vUv));
-    gl_FragColor = vec4(col, a);
+    gl_FragColor = vec4(col, a * uAlpha);
   }
 `
 
@@ -69,6 +72,7 @@ export default function WorkCanvas({ items, progress }: { items: Item[]; progres
 
   useEffect(() => {
     const el = host.current!
+    const vis = onScreen(el)
     const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 2), alpha: true, premultipliedAlpha: false })
     const gl = renderer.gl
     gl.clearColor(0, 0, 0, 0)
@@ -93,6 +97,7 @@ export default function WorkCanvas({ items, progress }: { items: Item[]; progres
           uBend: { value: 0.06 },
           uSplit: { value: 0 },
           uOffset: { value: 0 },
+          uAlpha: { value: 1 },
         },
       })
       const img = new Image()
@@ -112,8 +117,7 @@ export default function WorkCanvas({ items, progress }: { items: Item[]; progres
       W = r.width; H = r.height
       renderer.setSize(W, H)
       camera.orthographic({ left: -W / 2, right: W / 2, top: H / 2, bottom: -H / 2, near: 0.1, far: 100 })
-      cardW = Math.min(W * 0.86, 900)
-      cardH = Math.min(cardW * 0.58, H * 0.56)
+      ;({ w: cardW, h: cardH } = workCardSize(W, H))
       gap = cardH + Math.max(40, H * 0.08)
       cards.forEach(c => {
         c.mesh.scale.set(cardW, cardH, 1)
@@ -129,6 +133,8 @@ export default function WorkCanvas({ items, progress }: { items: Item[]; progres
     let vel = 0
     let raf = 0
     const loop = () => {
+      raf = requestAnimationFrame(loop)
+      if (!vis.on) return
       const target = progress.current ?? 0
       const next = p + (target - p) * 0.12
       vel += ((next - p) - vel) * 0.25
@@ -142,19 +148,21 @@ export default function WorkCanvas({ items, progress }: { items: Item[]; progres
         c.program.uniforms.uOffset.value = off
         c.program.uniforms.uBend.value = 0.07 + speed * 0.22
         c.program.uniforms.uSplit.value = speed * 0.018 * Math.sign(vel || 1)
+        // the first card is the intro stamp until it has landed here
+        c.program.uniforms.uAlpha.value = i === 0 && inFlight() ? 0 : 1
       })
       renderer.render({ scene, camera })
-      raf = requestAnimationFrame(loop)
     }
     raf = requestAnimationFrame(loop)
 
     return () => {
       cancelAnimationFrame(raf)
+      vis.stop()
       ro.disconnect()
       gl.getExtension('WEBGL_lose_context')?.loseContext()
       gl.canvas.remove()
     }
   }, [items, progress])
 
-  return <div ref={host} className="absolute inset-0" aria-hidden />
+  return <div ref={host} data-work-stage className="absolute inset-0" aria-hidden />
 }

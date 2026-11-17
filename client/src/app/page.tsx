@@ -6,6 +6,7 @@ import IntroCard from '@/components/IntroCard'
 import Work from '@/components/Work'
 import Contact from '@/components/Contact'
 import Cursor from '@/components/Cursor'
+import StampFlight from '@/components/StampFlight'
 import { startScroll, ScrollTrigger } from '@/components/scroll'
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
       <IntroCard />
       <Work />
       <Contact />
+      <StampFlight />
     </main>
   )
 }

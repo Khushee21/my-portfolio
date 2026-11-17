@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Renderer, Camera, Transform, Plane, Program, Mesh, Texture } from 'ogl'
 import { intro } from '@/data/site'
-import { drawBack, drawFront, fontsFromCss, loadImage } from './postcard'
+import { drawBack, drawFront, fontsFromCss, loadImage, stampBox, STAMP_TILT } from './postcard'
+import { flight } from './flight'
+import { onScreen } from './onScreen'
 import { gsap, ScrollTrigger } from './scroll'
 import { ChaiSticker, CodeSticker, StarSticker } from './Stickers'
 import InstantCamera from './InstantCamera'
@@ -84,6 +86,7 @@ export default function IntroCard() {
 
   useEffect(() => {
     const el = host.current!
+    const vis = onScreen(el)
     // The plain photo card shows until WebGL has proven it draws the real card.
     const showFallback = (on: boolean) => {
       if (fallback.current) fallback.current.style.opacity = on ? '1' : '0'
@@ -105,6 +108,7 @@ export default function IntroCard() {
     const scene = new Transform()
     const tFront = new Texture(gl, { generateMipmaps: false })
     const tBack = new Texture(gl, { generateMipmaps: false })
+    const tPeeled = new Texture(gl, { generateMipmaps: false }) // back face once the stamp has flown off
     const program = new Program(gl, {
       vertex,
       fragment,
@@ -144,6 +148,7 @@ export default function IntroCard() {
     const buildTextures = async (isPortrait: boolean) => {
       // phones get ~2.5x less canvas memory; layout is relative so it still looks the same
       const [W, H] = isPortrait ? [760, 1140] : [1800, 1200]
+      texW = W; texH = H
       ready = false
       try {
         // don't wait forever for web fonts on a slow mobile connection
@@ -163,6 +168,7 @@ export default function IntroCard() {
         if (!alive) return
         const frontCanvas = drawFront(W, H, photo, fonts)
         const backCanvas = drawBack(W, H, stamp, fonts)
+        const peeledCanvas = drawBack(W, H, stamp, fonts, true)
         // A canvas the phone couldn't allocate paints nothing: its corner is transparent instead of paper.
         const painted = (c: HTMLCanvasElement) => {
           try { return c.getContext('2d')!.getImageData(4, 4, 1, 1).data[3] > 0 } catch { return false }
@@ -170,8 +176,10 @@ export default function IntroCard() {
         if (!painted(frontCanvas) || !painted(backCanvas)) throw new Error('canvas came out blank on this device')
         tFront.image = frontCanvas
         tBack.image = backCanvas
+        tPeeled.image = peeledCanvas
         tFront.needsUpdate = true
         tBack.needsUpdate = true
+        tPeeled.needsUpdate = true
         ready = true
         verified = false
         checks = 0
@@ -182,6 +190,7 @@ export default function IntroCard() {
     }
 
     let cardW = 1, cardH = 1
+    let texW = 1800, texH = 1200
     const resize = () => {
       const r = el.getBoundingClientRect()
       renderer.setSize(r.width, r.height)
@@ -228,8 +237,36 @@ export default function IntroCard() {
     const drift = gsap.timeline({ scrollTrigger: { trigger: section.current, start: 'top top', end: 'bottom bottom', scrub: true } })
     props.forEach((p, i) => drift.to(p, { y: (i % 2 ? -1 : 1) * 60, rotate: (i % 2 ? 12 : -10), ease: 'none' }, 0))
 
+    // Tell the stamp flight where the avatar stamp sits on screen right now, and
+    // take it off the postcard while it's flying.
+    const fbStamp = fallback.current?.querySelector<HTMLElement>('[data-stamp]')
+    const trackStamp = () => {
+      const lifted = flight.t > 0
+      if (verified) {
+        const r = el.getBoundingClientRect()
+        const k = cardW / texW
+        const b = stampBox(texW, texH)
+        const dx = (b.sx + b.sw / 2 - texW / 2) * k
+        const dy = (b.sy + b.sh / 2 - texH / 2) * k
+        const th = -mesh.rotation.z // card tilt as a CSS (clockwise) angle
+        flight.start = {
+          x: r.left + r.width / 2 + dx * Math.cos(th) - dy * Math.sin(th),
+          y: r.top + r.height / 2 + dx * Math.sin(th) + dy * Math.cos(th),
+          w: b.sw * k, h: b.sh * k, rot: th + STAMP_TILT,
+        }
+        const want = lifted ? tPeeled : tBack
+        if (program.uniforms.tBack.value !== want) program.uniforms.tBack.value = want
+      } else if (fbStamp) {
+        const r = fbStamp.getBoundingClientRect()
+        flight.start = { x: r.left + r.width / 2, y: r.top + r.height / 2, w: fbStamp.offsetWidth, h: fbStamp.offsetHeight, rot: -0.02 }
+        fbStamp.style.visibility = lifted ? 'hidden' : ''
+      }
+    }
+
     let raf = 0
     const loop = () => {
+      raf = requestAnimationFrame(loop)
+      if (!vis.on) return
       state.prog += (state.target - state.prog) * 0.1
       const p = state.prog
       program.uniforms.uProg.value = p
@@ -241,6 +278,7 @@ export default function IntroCard() {
         shadow.current.style.boxShadow = `0 ${18 + lift * 40}px ${40 + lift * 60}px rgba(13,18,48,${0.35 - lift * 0.12})`
         shadow.current.style.opacity = String(1 - lift * 0.6)
       }
+      trackStamp()
       if (hint.current) hint.current.style.opacity = String(1 - Math.min(1, p * 6))
       // CSS flip card (visible only when WebGL isn't): turn over around the vertical axis
       if (flip.current) {
@@ -264,15 +302,16 @@ export default function IntroCard() {
           if (px[0] + px[1] + px[2] > 30) { verified = true; showFallback(false) }
         }
       }
-      raf = requestAnimationFrame(loop)
     }
     raf = requestAnimationFrame(loop)
 
     return () => {
       alive = false
       cancelAnimationFrame(raf)
+      vis.stop()
       ro.disconnect()
       st.kill()
+      flight.start = null
       drift.scrollTrigger?.kill()
       drift.kill()
       gl.canvas.removeEventListener('webglcontextlost', onLost)
@@ -361,7 +400,7 @@ function PostcardBack({ tall }: { tall: boolean }) {
           <text x="50" y="47" textAnchor="middle" fontSize="13" fontWeight="700" fill="#2440c8">{intro.postmark.date}</text>
           <text x="50" y="63" textAnchor="middle" fontSize="11" fontWeight="700" fill="#2440c8">{intro.postmark.year}</text>
         </svg>
-        <div className="rotate-3 bg-white p-[5%] shadow-sm" style={{ width: u(0.19) }}>
+        <div data-stamp className="rotate-3 bg-white p-[5%] shadow-sm" style={{ width: u(0.19) }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={intro.stamp} alt="" className="aspect-[4/5] w-full bg-cobalt object-cover" />
         </div>

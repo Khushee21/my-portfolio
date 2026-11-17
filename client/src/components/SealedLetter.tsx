@@ -79,8 +79,16 @@ export default function SealedLetter() {
     t.to(sealBot.current, { autoAlpha: 0, y: 30, duration: 0.4, ease: 'power1.in' }, '<0.1')
     // 3. letter slides up out of the envelope, then unfolds to full height
     t.to(s, { y: -envH * 0.42, duration: 0.55, ease: 'power2.out' }, '-=0.15')
-    t.to(s, { y: 0, height: startH + grow, duration: 0.9, ease: 'power3.inOut' })
-    t.to(wrap.current, { paddingTop: grow + envH * 0.04, duration: 0.9, ease: 'power3.inOut' }, '<')
+    // The page layout never changes: the sheet grows upward and floats over
+    // whatever sits above the envelope.
+    t.to(s, {
+      y: 0, height: startH + grow, duration: 0.9, ease: 'power3.inOut',
+      onComplete() {
+        // bring the top of the letter into view if it unfolded past the screen edge
+        const top = s.getBoundingClientRect().top
+        if (top < 80) window.scrollBy({ top: top - 80, behavior: 'smooth' })
+      },
+    })
     const q = gsap.utils.selector(root)
     t.to(q('.letter-crease'), { opacity: 0.12, duration: 0.9 }, '<')
     t.fromTo(q('.letter-line'), { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, stagger: 0.08, duration: 0.4 }, '-=0.35')
@@ -122,7 +130,7 @@ export default function SealedLetter() {
         Some things read better on paper. Break the seal; it&rsquo;s addressed to you.
       </p>
 
-      <div ref={wrap} className="relative mt-6 w-full max-w-[340px] md:max-w-[360px]">
+      <div ref={wrap} className="relative z-30 mt-6 w-full max-w-[340px] md:max-w-[360px]">
         <div ref={env} className="relative aspect-[1.6] w-full -rotate-2" style={{ perspective: 1400 }}>
           {/* inside of the envelope */}
           <div className="absolute inset-0 rounded-md" style={{ background: INSIDE, boxShadow: '0 24px 50px rgba(13,18,48,.28)' }} />
@@ -194,7 +202,7 @@ export default function SealedLetter() {
         </div>
 
         {open && (
-          <button onClick={toggle} className="mono mx-auto mt-6 block rounded-full border-2 border-ink bg-cream px-4 py-2 text-[11px] text-ink transition-transform hover:scale-105">
+          <button onClick={toggle} className="mono absolute top-full left-1/2 mt-4 -translate-x-1/2 whitespace-nowrap rounded-full border-2 border-ink bg-cream px-4 py-2 text-[11px] text-ink transition-transform hover:scale-105">
             Fold it back ✉
           </button>
         )}

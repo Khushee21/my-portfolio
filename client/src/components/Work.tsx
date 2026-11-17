@@ -58,7 +58,9 @@ export default function Work() {
         <div className="relative z-10 flex flex-col gap-6 px-5 pt-24 pb-2 md:justify-between md:px-12 md:pt-28 md:pb-12">
           <div>
             <p className="mono mb-4 text-xs text-ink/60">Selected work</p>
-            <div className="overflow-hidden">
+            {/* --land (set by StampFlight) lifts the title in as the intro stamp touches down */}
+            <div className="overflow-hidden"
+              style={{ opacity: 'var(--land, 1)', transform: 'translateY(calc((1 - var(--land, 1)) * 30%))' }}>
               <h2 key={p.title} className="display work-title text-cobalt" style={{ fontSize: 'clamp(3.6rem, 12vw, 13rem)' }}>
                 <button onClick={e => open(e, idx)} className="text-left uppercase transition-colors hover:text-ink">{p.title}</button>
               </h2>
@@ -78,6 +80,9 @@ export default function Work() {
                   <a key={l.href} href={l.href} target="_blank" rel="noreferrer"
                     className={`underline-offset-4 hover:underline ${i === 0 ? 'font-semibold text-cobalt' : 'text-ink/80'}`}>{l.label} ↗</a>
                 ))}
+                {p.links.length === 0 && p.linkNote && (
+                  <span className="rounded-full border border-dashed border-ink/40 px-3 py-1.5 text-[11px] text-ink/65">🚧 {p.linkNote}</span>
+                )}
               </div>
             </div>
           </div>

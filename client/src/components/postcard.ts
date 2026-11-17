@@ -90,7 +90,22 @@ export function drawFront(W: number, H: number, photo: HTMLImageElement, f: Font
   return c
 }
 
-export function drawBack(W: number, H: number, stampImg: HTMLImageElement, f: Fonts) {
+// Where the avatar stamp sits on the back face (canvas px, before its 0.05 rad tilt).
+// Shared with the scroll flight so the flying stamp lifts off exactly from here.
+export const STAMP_TILT = 0.05
+export function stampBox(W: number, H: number) {
+  const portrait = H > W
+  const u = Math.min(W, H)
+  const pad = u * 0.035 + u * 0.022 + u * 0.06
+  const right = portrait
+    ? { x: pad, y: H * 0.6, w: W - pad * 2 }
+    : { x: W * 0.6, y: H * 0.15, w: W * 0.4 - pad }
+  const sw = u * (portrait ? 0.2 : 0.16), sh = sw * 1.22
+  return { sx: right.x + right.w - sw, sy: right.y + (portrait ? u * 0.02 : 0), sw, sh }
+}
+
+// `peeled`: the stamp has been lifted off; leave only its faint glue mark.
+export function drawBack(W: number, H: number, stampImg: HTMLImageElement, f: Fonts, peeled = false) {
   const portrait = H > W
   const c = document.createElement('canvas')
   c.width = W
@@ -195,12 +210,23 @@ export function drawBack(W: number, H: number, stampImg: HTMLImageElement, f: Fo
   })
 
   // Right: stamp (perforated) with the avatar
-  const sw = u * (portrait ? 0.2 : 0.16), sh = sw * 1.22
-  const sx = right.x + right.w - sw, sy = right.y + (portrait ? u * 0.02 : 0)
+  const { sx, sy, sw, sh } = stampBox(W, H)
   ctx.save()
   ctx.translate(sx + sw / 2, sy + sh / 2)
-  ctx.rotate(0.05)
+  ctx.rotate(STAMP_TILT)
   ctx.translate(-sw / 2, -sh / 2)
+  if (peeled) {
+    // cleaner, paler paper where the stamp kept the sun off, plus a few glue dabs
+    ctx.fillStyle = 'rgba(255,255,255,.5)'
+    ctx.fillRect(0, 0, sw, sh)
+    ctx.strokeStyle = 'rgba(120,90,40,.14)'
+    ctx.lineWidth = u * 0.002
+    ctx.strokeRect(0, 0, sw, sh)
+    ctx.fillStyle = 'rgba(190,160,90,.16)'
+    for (const [gx, gy, gr] of [[0.3, 0.25, 0.1], [0.68, 0.42, 0.13], [0.42, 0.7, 0.09], [0.7, 0.8, 0.07]]) {
+      ctx.beginPath(); ctx.ellipse(sw * gx, sh * gy, sw * gr * 1.3, sw * gr, 0.4, 0, 7); ctx.fill()
+    }
+  } else {
   ctx.shadowColor = 'rgba(0,0,0,.18)'
   ctx.shadowBlur = u * 0.01
   ctx.shadowOffsetY = u * 0.004
@@ -222,6 +248,7 @@ export function drawBack(W: number, H: number, stampImg: HTMLImageElement, f: Fo
   ctx.textAlign = 'right'
   ctx.fillText('INDIA', sw - ip * 1.1, sh - ip * 0.75)
   ctx.textAlign = 'left'
+  }
   ctx.restore()
 
   // Postmark: double ring with text around it, overlapping the stamp edge

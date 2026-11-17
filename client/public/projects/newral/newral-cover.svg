@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="2" fill="#2440c8" opacity=".12" />
+    </pattern>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#0d1230" flood-opacity=".22" />
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1000" fill="#fff4dc" />
+  <rect width="1600" height="1000" fill="url(#dots)" />
+
+  <!-- header -->
+  <text x="110" y="150" font-family="Arial Black, Arial, sans-serif" font-size="120" font-weight="900" fill="#2440c8" letter-spacing="-2">NEWRAL</text>
+  <text x="114" y="205" font-family="Consolas, monospace" font-size="28" fill="#0d1230" opacity=".7" letter-spacing="4">FULL-STACK DEVELOPER · MAY – SEP 2025</text>
+
+  <!-- card 1: Earthy Agri-Market -->
+  <g transform="translate(110 290) rotate(-2)" filter="url(#sh)">
+    <rect width="640" height="560" rx="28" fill="#ffffff" />
+    <rect width="640" height="170" rx="28" fill="#2f8a4e" />
+    <rect y="140" width="640" height="30" fill="#2f8a4e" />
+    <!-- leaf -->
+    <g transform="translate(470 30) rotate(-20)">
+      <path d="M0 55C35 0 110 0 150 55 110 110 35 110 0 55z" fill="#ffd23f" />
+      <path d="M0 55h150M40 55l20-16M40 55l20 16M80 55l20-18M80 55l20 18" stroke="#2f8a4e" stroke-width="6" fill="none" stroke-linecap="round" />
+    </g>
+    <text x="44" y="78" font-family="Consolas, monospace" font-size="24" fill="#fff4dc" letter-spacing="3">MARKETPLACE</text>
+    <text x="44" y="135" font-family="Arial Black, Arial, sans-serif" font-size="50" font-weight="900" fill="#ffffff">EARTHY AGRI</text>
+    <!-- order tracking rows -->
+    <g font-family="Arial, sans-serif" font-size="26" fill="#0d1230">
+      <g transform="translate(44 230)">
+        <circle cx="16" cy="0" r="16" fill="#2f8a4e" /><text x="50" y="9">Order placed</text>
+        <rect x="0" y="40" width="552" height="4" rx="2" fill="#0d1230" opacity=".08" />
+      </g>
+      <g transform="translate(44 310)">
+        <circle cx="16" cy="0" r="16" fill="#2f8a4e" /><text x="50" y="9">Packed by seller</text>
+        <rect x="0" y="40" width="552" height="4" rx="2" fill="#0d1230" opacity=".08" />
+      </g>
+      <g transform="translate(44 390)">
+        <circle cx="16" cy="0" r="16" fill="#ffd23f" stroke="#2f8a4e" stroke-width="4" /><text x="50" y="9">Out for delivery</text>
+        <rect x="0" y="40" width="552" height="4" rx="2" fill="#0d1230" opacity=".08" />
+      </g>
+    </g>
+    <g font-family="Consolas, monospace" font-size="20" letter-spacing="2">
+      <rect x="44" y="465" width="120" height="44" rx="22" fill="#2440c8" /><text x="68" y="494" fill="#fff4dc">BUYER</text>
+      <rect x="180" y="465" width="134" height="44" rx="22" fill="#2440c8" /><text x="202" y="494" fill="#fff4dc">SELLER</text>
+      <rect x="330" y="465" width="120" height="44" rx="22" fill="#0d1230" /><text x="352" y="494" fill="#ffd23f">ADMIN</text>
+    </g>
+  </g>
+
+  <!-- card 2: LMS -->
+  <g transform="translate(850 270) rotate(2)" filter="url(#sh)">
+    <rect width="640" height="580" rx="28" fill="#ffffff" />
+    <rect width="640" height="170" rx="28" fill="#2440c8" />
+    <rect y="140" width="640" height="30" fill="#2440c8" />
+    <!-- graduation cap -->
+    <g transform="translate(480 40)">
+      <path d="M0 40L70 10 140 40 70 70z" fill="#ffd23f" />
+      <path d="M30 54v30c0 12 80 12 80 0V54" fill="#ffd23f" opacity=".85" />
+      <path d="M140 40v40" stroke="#ffd23f" stroke-width="6" stroke-linecap="round" />
+    </g>
+    <text x="44" y="78" font-family="Consolas, monospace" font-size="24" fill="#fff4dc" letter-spacing="3">WEB + MOBILE</text>
+    <text x="44" y="135" font-family="Arial Black, Arial, sans-serif" font-size="56" font-weight="900" fill="#ffffff">LMS</text>
+    <!-- course progress -->
+    <g font-family="Arial, sans-serif" font-size="26" fill="#0d1230">
+      <text x="44" y="240">Course progress</text>
+      <rect x="44" y="262" width="552" height="22" rx="11" fill="#2440c8" opacity=".12" />
+      <rect x="44" y="262" width="386" height="22" rx="11" fill="#2440c8" />
+      <text x="44" y="342">Lessons</text>
+      <g fill="#ffd23f" stroke="#0d1230" stroke-width="3">
+        <rect x="44" y="362" width="120" height="80" rx="12" />
+        <rect x="184" y="362" width="120" height="80" rx="12" />
+        <rect x="324" y="362" width="120" height="80" rx="12" fill="#fff4dc" />
+        <rect x="464" y="362" width="120" height="80" rx="12" fill="#fff4dc" />
+      </g>
+    </g>
+    <g transform="translate(44 480)">
+      <rect width="300" height="60" rx="30" fill="#0d1230" />
+      <text x="34" y="40" font-family="Consolas, monospace" font-size="24" fill="#ffd23f" letter-spacing="2">35+ REST APIs</text>
+    </g>
+  </g>
+</svg>

@@ -10,6 +10,7 @@ import SealedLetter from './SealedLetter'
 const icons: Record<string, React.ReactNode> = {
   email: <path d="M3 6h18v12H3zM3 7l9 6 9-6" />,
   github: <path d="M9 19c-4 1.3-4-2-6-2.5m12 5v-3.5a3 3 0 0 0-.9-2.4c3-.3 6-1.5 6-6.6a5 5 0 0 0-1.4-3.6 4.7 4.7 0 0 0-.1-3.6s-1.1-.3-3.6 1.4a12.4 12.4 0 0 0-6.5 0C5.9 1.6 4.8 1.9 4.8 1.9a4.7 4.7 0 0 0-.1 3.6A5 5 0 0 0 3.3 9c0 5.1 3 6.3 6 6.6a3 3 0 0 0-.9 2.4V22" />,
+  twitter: <path d="M4 4h4.5L20 20h-4.5zM20 4l-6.7 7.6M4 20l6.7-7.6" />,
   linkedin: <path d="M4 9h4v11H4zM6 4.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4M10 9h4v1.6c.6-1 1.9-1.9 3.6-1.9 3 0 3.4 2 3.4 4.6V20h-4v-5.6c0-1.3 0-3-1.8-3S13 12.8 13 14.3V20h-3z" />,
 }
 
@@ -30,10 +31,10 @@ export default function Contact() {
     return () => ctx.revert()
   }, [])
 
-  const links = (['email', 'github', 'linkedin'] as const).filter(k => site.links[k])
+  const links = (['email', 'github', 'linkedin', 'twitter'] as const).filter(k => site.links[k])
 
   return (
-    <footer id="contact" ref={root} className="relative overflow-hidden bg-sun px-5 pt-16 text-cobalt md:px-12 md:pt-24">
+    <footer id="contact" ref={root} className="relative overflow-x-clip bg-sun px-5 pt-10 text-cobalt md:px-12 md:pt-14">
       <div className="grid gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:items-start">
         <div className="flex items-center gap-5 md:gap-8">
           <AvatarSticker className="talk-avatar size-24 shrink-0 md:size-36" />

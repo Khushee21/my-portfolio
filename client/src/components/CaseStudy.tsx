@@ -80,7 +80,7 @@ export default function CaseStudy({ index }: { index: number }) {
                   {l.label} ↗
                 </a>
               ))}
-              {p.links.length === 0 && <span className="mono rounded-full border-2 border-dashed border-ink/40 px-5 py-2.5 text-[11px] text-ink/60">No public link</span>}
+              {p.links.length === 0 && <span className="mono rounded-full border-2 border-dashed border-ink/40 px-5 py-2.5 text-[11px] text-ink/60">{p.linkNote ?? 'No public link'}</span>}
             </div>
           </div>
           <div className="relative mx-auto h-[220px] w-[200px] md:mx-0">
